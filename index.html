@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI CentX — Business Management & Digital Transformation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   BRAND PALETTE — extracted from Ai CentX logo & banner
+   Deep navy → Royal blue → Electric blue → White
+══════════════════════════════════════════ */
+:root {
+  --bg:           #020c1e;   /* deepest navy */
+  --surface:      #050f28;   /* dark navy */
+  --surface2:     #0a1c45;   /* mid navy */
+  --surface3:     #0d2257;   /* lighter navy */
+  --accent:       #1a4bff;   /* royal blue (logo bg center) */
+  --accent-mid:   #2b6fff;   /* bright royal */
+  --accent-glow:  #5b9fff;   /* electric glow blue */
+  --accent-light: #93c5fd;   /* soft sky */
+  --hex-stroke:   rgba(91,159,255,0.18);
+  --border:       rgba(91,159,255,0.12);
+  --border-mid:   rgba(91,159,255,0.25);
+  --text:         #d0e4ff;
+  --muted:        #6a90c8;
+  --heading:      #ffffff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── HEXAGON NETWORK BACKGROUND (matches banner) ── */
+.hex-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.hex-canvas svg {
+  position: absolute;
+  width: 100%; height: 100%;
+  opacity: 0.18;
+}
+
+/* ── RADIAL GLOW ── */
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-orb.top-right {
+  width: 700px; height: 700px;
+  top: -200px; right: -150px;
+  background: radial-gradient(circle at center,
+    rgba(26,75,255,0.22) 0%,
+    rgba(43,111,255,0.12) 35%,
+    transparent 70%);
+  animation: drift 16s ease-in-out infinite;
+}
+.glow-orb.bottom-left {
+  width: 500px; height: 500px;
+  bottom: -150px; left: -100px;
+  background: radial-gradient(circle at center,
+    rgba(10,28,69,0.6) 0%,
+    rgba(26,75,255,0.08) 50%,
+    transparent 70%);
+}
+@keyframes drift {
+  0%,100% { transform: translate(0,0); }
+  50%      { transform: translate(-30px, 40px); }
+}
+
+/* ══════════════════════════════════════════
+   TYPOGRAPHY HELPERS
+══════════════════════════════════════════ */
+.label-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(26,75,255,0.12);
+  border: 1px solid var(--border-mid);
+  color: var(--accent-glow);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 3px;
+  margin-bottom: 1.25rem;
+}
+.label-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent-glow);
+  border-radius: 50%;
+  animation: blink 2.4s ease infinite;
+}
+@keyframes blink {
+  0%,100% { opacity:1; } 50% { opacity:0.3; }
+}
+
+h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--heading);
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 70px;
+  background: rgba(2,12,30,0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── SVG LOGO ── */
+.nav-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 42px; height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #0a2880 0%, #1a4bff 60%, #2b6fff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(26,75,255,0.45);
+  flex-shrink: 0;
+}
+.logo-icon svg { width: 28px; height: 28px; }
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.logo-centx {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.18em;
+  color: var(--heading);
+  text-transform: uppercase;
+}
+.logo-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  color: var(--accent-glow);
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.25rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--heading); }
+
+/* ── NAV RIGHT — lang + CTA button ── */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.lang-switcher { display: flex; gap: 0.35rem; }
+.lang-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.lang-btn .flag {
+  width: 18px;
+  height: 13px;
+  border-radius: 2px;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+.lang-btn.active, .lang-btn:hover {
+  border-color: var(--accent-glow);
+  color: var(--accent-glow);
+  background: rgba(91,159,255,0.08);
+}
+
+/* ── CTA NAV BUTTON (top right) ── */
+.btn-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(26,75,255,0.4);
+  transition: all 0.25s;
+}
+.btn-nav-cta:hover {
+  background: linear-gradient(135deg, var(--accent-mid) 0%, var(--accent-glow) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(26,75,255,0.55);
+}
+.btn-nav-cta .arrow { font-style: normal; }
+
+/* ── SHARED BUTTONS ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.6rem;
+  border-radius: 4px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(26,75,255,0.4);
+  white-space: nowrap;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-mid), var(--accent-glow));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(26,75,255,0.55);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--accent-light);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.73rem 1.6rem;
+  border-radius: 4px;
+  text-decoration: none;
+  border: 1px solid var(--border-mid);
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.btn-outline:hover {
+  border-color: var(--accent-glow);
+  color: var(--heading);
+  background: rgba(26,75,255,0.1);
+  box-shadow: 0 0 20px rgba(26,75,255,0.15);
+}
+
+section { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 5% 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated diagonal beam */
+#hero::before {
+  content: '';
+  position: absolute;
+  top: -20%; left: -10%;
+  width: 120%; height: 140%;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(26,75,255,0.04) 30%,
+    rgba(43,111,255,0.07) 50%,
+    rgba(26,75,255,0.04) 70%,
+    transparent 100%
+  );
+  transform: rotate(-8deg) translateY(0);
+  animation: beamShift 10s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes beamShift {
+  0%,100% { transform: rotate(-8deg) translateY(0); }
+  50%      { transform: rotate(-8deg) translateY(-30px); }
+}
+
+.hero-tag { animation: fadeUp 0.7s ease both; }
+
+h1.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
+  line-height: 1.0;
+  letter-spacing: 0.04em;
+  color: var(--heading);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  max-width: 14ch;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+h1.hero-title .line-blue {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent-mid);
+  display: block;
+}
+h1.hero-title .line-fill {
+  color: var(--heading);
+  display: block;
+}
+/* Keep l3+l4 inline on the same line */
+h1.hero-title .hero-inline-row { display: block; }
+h1.hero-title .hero-inline-row span { display: inline; }
+h1.hero-title .line-glow {
+  background: linear-gradient(90deg, var(--accent-mid), var(--accent-glow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 52ch;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  line-height: 1.75;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  margin-top: 5rem;
+  animation: fadeUp 0.7s 0.45s ease both;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: fit-content;
+  overflow: hidden;
+  background: rgba(5,15,40,0.6);
+  backdrop-filter: blur(10px);
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 2rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--heading);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.stat-num span {
+  background: linear-gradient(90deg, var(--accent-mid), var(--accent-glow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* grid lines */
+#hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(91,159,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,159,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 70% at 20% 0%, black 20%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════ */
+#about {
+  padding: 7rem 5%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.about-text { color: var(--muted); font-weight: 300; }
+.about-text p + p { margin-top: 1rem; }
+
+.expertise-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.pill {
+  background: rgba(26,75,255,0.1);
+  border: 1px solid var(--border-mid);
+  color: var(--accent-light);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.85rem;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+.pill:hover {
+  background: rgba(26,75,255,0.2);
+  border-color: var(--accent-glow);
+}
+.pill-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  flex-shrink: 0;
+}
+
+/* about visual card */
+.about-visual { position: relative; height: 420px; }
+
+.about-card {
+  position: absolute;
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.about-card.main {
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.75rem;
+  overflow: hidden;
+}
+/* hex pattern overlay */
+.about-card.main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='52'%3E%3Cpolygon points='30,1 59,16 59,46 30,51 1,46 1,16' fill='none' stroke='rgba(91,159,255,0.12)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 60px 52px;
+  opacity: 1;
+  pointer-events: none;
+}
+/* glow accent */
+.about-card.main::after {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(26,75,255,0.18), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.card-diagram {
+  position: absolute;
+  top: 1.5rem; left: 1.5rem; right: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 0.5rem;
+  z-index: 1;
+}
+.diagram-box {
+  height: 54px;
+  border: 1px solid rgba(26,75,255,0.25);
+  border-radius: 6px;
+  background: rgba(26,75,255,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.diagram-box.wide { grid-column: span 2; }
+.connector-row {
+  grid-column: span 3;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(91,159,255,0.3), transparent);
+  margin: 0.1rem 0;
+}
+
+.card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--heading);
+  margin-bottom: 0.3rem;
+  position: relative; z-index: 1;
+}
+.card-sub {
+  font-size: 0.76rem;
+  color: var(--accent-glow);
+  position: relative; z-index: 1;
+  letter-spacing: 0.05em;
+}
+
+.about-card.floating {
+  bottom: 1.25rem; right: -1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(2,12,30,0.92);
+  border-color: var(--border-mid);
+  backdrop-filter: blur(16px);
+  border-radius: 8px;
+  z-index: 2;
+  animation: floatCard 5s ease-in-out infinite;
+}
+@keyframes floatCard {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.float-icon { font-size: 1.4rem; }
+.float-text { font-size: 0.75rem; color: var(--text); font-family: 'Outfit', sans-serif; }
+.float-text strong { display: block; color: var(--accent-glow); font-family: 'Rajdhani', sans-serif; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ══════════════════════════════════════════
+   SERVICES
+══════════════════════════════════════════ */
+#services {
+  padding: 7rem 5%;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%);
+  position: relative;
+}
+/* diagonal stripe accent */
+#services::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-mid), transparent);
+}
+
+.section-header { text-align: center; margin-bottom: 4rem; }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.service-card {
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.32s ease;
+  cursor: default;
+}
+/* corner accent */
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 0;
+  background: linear-gradient(180deg, var(--accent-mid), var(--accent-glow));
+  transition: height 0.32s ease;
+}
+.service-card:hover::before { height: 100%; }
+.service-card:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(2,12,30,0.7), 0 0 30px rgba(26,75,255,0.1);
+}
+
+.service-icon {
+  width: 50px; height: 50px;
+  background: rgba(26,75,255,0.12);
+  border: 1px solid rgba(26,75,255,0.25);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.service-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--heading);
+  margin-bottom: 0.65rem;
+}
+.service-desc { color: var(--muted); font-size: 0.875rem; font-weight: 300; line-height: 1.65; }
+
+/* ══════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════ */
+#how { padding: 7rem 5%; }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0;
+  position: relative;
+}
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 1.75rem; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-mid) 20%, var(--border-mid) 80%, transparent);
+}
+
+.step { padding-right: 2rem; }
+.step-num {
+  width: 3.5rem; height: 3.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: var(--accent-glow);
+  margin-bottom: 1.5rem;
+  position: relative; z-index: 1;
+  transition: all 0.3s;
+}
+.step:hover .step-num {
+  background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+  color: #fff;
+  border-color: var(--accent-mid);
+  box-shadow: 0 0 20px rgba(26,75,255,0.4);
+}
+.step-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--heading);
+  margin-bottom: 0.5rem;
+}
+.step-desc { color: var(--muted); font-size: 0.86rem; font-weight: 300; }
+
+/* ══════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════ */
+#contact {
+  padding: 7rem 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-box {
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3.5rem 4rem;
+  max-width: 660px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.contact-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-mid), var(--accent-glow), transparent);
+}
+.contact-box::after {
+  content: '';
+  position: absolute;
+  top: -120px; left: 50%;
+  transform: translateX(-50%);
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(26,75,255,0.1), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.contact-box h2 { text-align: center; margin-bottom: 0.75rem; }
+.contact-sub {
+  color: var(--muted);
+  font-size: 0.93rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative; z-index: 1;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.form-group { margin-bottom: 0.75rem; position: relative; z-index: 1; }
+.form-row { position: relative; z-index: 1; }
+
+.form-group input,
+.form-group textarea,
+.form-row input {
+  width: 100%;
+  background: rgba(2,12,30,0.7);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem 1.1rem;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder,
+.form-row input::placeholder { color: var(--muted); }
+.form-group input:focus,
+.form-group textarea:focus,
+.form-row input:focus {
+  border-color: var(--accent-mid);
+  box-shadow: 0 0 0 3px rgba(26,75,255,0.12);
+}
+
+.form-submit {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.9rem;
+  padding: 0.95rem;
+  margin-top: 0.25rem;
+  border-radius: 6px;
+  letter-spacing: 0.12em;
+}
+.form-success {
+  display: none;
+  text-align: center;
+  position: relative; z-index: 1;
+  color: var(--accent-glow);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  padding: 1.5rem 0;
+}
+
+/* ══════════════════════════════════════════
+   FAQ
+══════════════════════════════════════════ */
+#faq { padding: 7rem 5%; }
+.faq-inner { max-width: 820px; margin: 0 auto; }
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.97rem;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: 1.4rem 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+.faq-q:hover { color: var(--accent-glow); }
+.faq-icon {
+  width: 26px; height: 26px;
+  border: 1px solid var(--border-mid);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  color: var(--accent-glow);
+  transition: all 0.3s;
+  line-height: 1;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: rgba(26,75,255,0.15);
+  border-color: var(--accent-mid);
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.7;
+  transition: max-height 0.38s ease, padding 0.38s ease;
+}
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.5rem; }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; z-index: 1;
+  background: rgba(2,12,30,0.6);
+}
+.footer-left { display: flex; flex-direction: column; gap: 0.2rem; }
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+.footer-logo .logo-icon { width: 32px; height: 32px; border-radius: 6px; }
+.footer-logo .logo-icon svg { width: 22px; height: 22px; }
+.footer-logo .logo-centx { font-size: 0.95rem; }
+.footer-logo .logo-sub   { font-size: 0.54rem; }
+.footer-copy { color: var(--muted); font-size: 0.78rem; margin-top: 0.1rem; }
+
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a {
+  color: var(--muted);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent-light); }
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.stagger .reveal:nth-child(1) { transition-delay: 0s; }
+.stagger .reveal:nth-child(2) { transition-delay: 0.07s; }
+.stagger .reveal:nth-child(3) { transition-delay: 0.14s; }
+.stagger .reveal:nth-child(4) { transition-delay: 0.21s; }
+.stagger .reveal:nth-child(5) { transition-delay: 0.28s; }
+.stagger .reveal:nth-child(6) { transition-delay: 0.35s; }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 960px) {
+  #about { grid-template-columns: 1fr; gap: 3rem; }
+  .about-visual { height: 300px; }
+  .about-card.floating { right: 0; }
+  nav .nav-links { display: none; }
+  .hero-stats { flex-direction: column; width: 100%; border-radius: 6px; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-item:last-child { border-bottom: none; }
+  footer { flex-direction: column; gap: 1.25rem; text-align: center; align-items: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .steps::before { display: none; }
+  .step { padding: 0; margin-bottom: 2.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .contact-box { padding: 2.5rem 1.75rem; }
+}
+@media (max-width: 480px) {
+  .btn-nav-cta span:not(.arrow) { display: none; }
+  .btn-nav-cta::before { content: attr(data-short); }
+}
+
+/* ══════════════════════════════════════════
+   SOCIAL FOLLOW BUTTONS
+══════════════════════════════════════════ */
+.social-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* LinkedIn */
+.btn-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #0A66C2;
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+  box-shadow: 0 3px 12px rgba(10,102,194,0.35);
+}
+.btn-linkedin:hover {
+  background: #004182;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10,102,194,0.5);
+}
+.btn-linkedin svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+
+/* Instagram */
+.btn-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+  box-shadow: 0 3px 12px rgba(220,39,67,0.35);
+}
+.btn-instagram:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220,39,67,0.5);
+}
+.btn-instagram svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+
+/* Substack */
+.btn-substack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FF6719;
+  color: #fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+  box-shadow: 0 3px 12px rgba(255,103,25,0.35);
+}
+.btn-substack:hover {
+  background: #e0550f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,103,25,0.55);
+}
+.btn-substack svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+
+/* Social section inside contact box */
+.contact-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.contact-social-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.contact-social .social-bar {
+  justify-content: center;
+}
+
+/* Footer social buttons */
+.footer-social { display: flex; gap: 0.6rem; align-items: center; }
+
+/* ── FORM STATES ── */
+.form-loading {
+  display: none;
+  text-align: center;
+  padding: 1.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+.form-loading .spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent-glow);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 0.75rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.form-loading p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.form-error {
+  display: none;
+  text-align: center;
+  color: #ff6b6b;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 1rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── CASE STUDY CARDS ── */
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.cs-card {
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.cs-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-glow));
+}
+.cs-card:hover {
+  border-color: rgba(91,159,255,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.5), 0 0 24px rgba(26,75,255,0.08);
+}
+
+.cs-header {
+  padding: 1.75rem 1.75rem 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.cs-industry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(26,75,255,0.1);
+  border: 1px solid rgba(26,75,255,0.25);
+  color: var(--accent-glow);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  border-radius: 3px;
+}
+.cs-company {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--heading);
+}
+.cs-region {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 300;
+  margin-top: 2px;
+}
+
+/* KPI metrics row */
+.cs-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin: 1.25rem 0 0;
+}
+.cs-metric {
+  background: rgba(2,12,30,0.5);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.cs-metric-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--heading);
+  letter-spacing: -0.01em;
+}
+.cs-metric-val .pos { color: #22c55e; }
+.cs-metric-val .neg { color: #f97316; }
+.cs-metric-key {
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+/* 4-step mini timeline */
+.cs-body { padding: 1.5rem 1.75rem 1.75rem; }
+.cs-challenge {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  border-left: 2px solid rgba(26,75,255,0.3);
+  padding-left: 0.85rem;
+}
+.cs-steps-mini {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.cs-step-mini {
+  background: rgba(26,75,255,0.07);
+  border: 1px solid rgba(26,75,255,0.15);
+  border-radius: 8px;
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+}
+.cs-step-num {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--accent-glow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.cs-step-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--heading);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+.cs-step-detail {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.4;
+}
+.cs-result {
+  background: rgba(34,197,94,0.06);
+  border: 1px solid rgba(34,197,94,0.15);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.cs-result strong { color: #22c55e; }
+
+/* ── REVIEW CARDS ── */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.rev-card {
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.rev-card::after {
+  content: '"';
+  position: absolute;
+  top: 0.5rem; right: 1.25rem;
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(26,75,255,0.08);
+  font-family: Georgia, serif;
+  pointer-events: none;
+}
+.rev-card:hover {
+  border-color: rgba(91,159,255,0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.4);
+}
+.rev-stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.rev-text {
+  font-size: 0.88rem;
+  color: var(--text);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+.rev-author {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.rev-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #2b6fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.rev-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--heading);
+  letter-spacing: 0.04em;
+}
+.rev-role { font-size: 0.72rem; color: var(--muted); font-weight: 300; }
+
+@media (max-width: 700px) {
+  .cs-grid { grid-template-columns: 1fr; }
+  .cs-steps-mini { grid-template-columns: repeat(2,1fr); }
+  .cs-metrics { grid-template-columns: repeat(3,1fr); }
+  .reviews-grid { grid-template-columns: 1fr; }
+}
+
+/* ── INTEGRATED TRANSFORMATION MODEL ── */
+.itm-diagram {
+  position: absolute;
+  top: 1rem; left: 1rem; right: 1rem; bottom: 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.5rem;
+  z-index: 1;
+}
+.itm-connectors {
+  position: absolute;
+  inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.itm-cell {
+  background: rgba(10,28,69,0.6);
+  border: 1px solid rgba(26,75,255,0.2);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  position: relative;
+  z-index: 2;
+  transition: all 0.25s;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+.itm-cell:hover {
+  background: rgba(26,75,255,0.15);
+  border-color: rgba(91,159,255,0.4);
+  transform: scale(1.04);
+}
+.itm-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.itm-icon svg { width: 100%; height: 100%; }
+.itm-people  .itm-icon svg { color: #5b9fff; }
+.itm-process .itm-icon svg { color: #a78bfa; }
+.itm-tech    .itm-icon svg { color: #34d399; }
+.itm-data    .itm-icon svg { color: #fb923c; }
+
+.itm-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--heading);
+  line-height: 1;
+}
+.itm-desc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Centre core node */
+.itm-core {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+}
+.itm-core-ring {
+  position: absolute;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(26,75,255,0.4);
+  background: rgba(26,75,255,0.08);
+  animation: itm-pulse 3s ease-in-out infinite;
+}
+@keyframes itm-pulse {
+  0%,100% { transform: scale(1);   opacity: 1; }
+  50%      { transform: scale(1.1); opacity: 0.6; }
+}
+.itm-core-inner {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0a2880, #1a4bff);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 16px rgba(26,75,255,0.6);
+  z-index: 1;
+  position: relative;
+}
+
+/* ── LINKEDIN POST CARDS ── */
+.li-post-card {
+  background: linear-gradient(145deg, var(--surface) 0%, var(--surface2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.li-post-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0A66C2, var(--accent-glow));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.li-post-card:hover {
+  border-color: rgba(10,102,194,0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45), 0 0 20px rgba(10,102,194,0.08);
+}
+.li-post-card:hover::before { transform: scaleX(1); }
+
+.li-post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.li-avatar {
+  width: 42px; height: 42px;
+  background: linear-gradient(145deg, #0a2880 0%, #1a4bff 60%, #2b6fff 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(26,75,255,0.4);
+}
+.li-author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+.li-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--heading);
+  letter-spacing: 0.04em;
+}
+.li-meta {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+.li-logo { flex-shrink: 0; }
+
+.li-post-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(10,102,194,0.1);
+  border: 1px solid rgba(10,102,194,0.2);
+  color: #5b9fff;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.li-post-body {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.7;
+  flex: 1;
+}
+.li-post-body em {
+  font-style: normal;
+  color: var(--accent-glow);
+  font-weight: 500;
+}
+
+.li-post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.li-reactions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.li-react-icon { font-size: 1rem; }
+.li-react-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-left: 0.25rem;
+}
+.li-read-more {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0A66C2;
+  text-decoration: none;
+  border: 1px solid rgba(10,102,194,0.3);
+  padding: 0.3rem 0.75rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  background: rgba(10,102,194,0.06);
+}
+.li-read-more:hover {
+  background: #0A66C2;
+  color: #fff;
+  border-color: #0A66C2;
+}
+</style>
+</head>
+<body>
+
+<!-- ── BACKGROUND EFFECTS ── -->
+<div class="hex-canvas" aria-hidden="true">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <!-- hexagon network — mirrors the LinkedIn banner -->
+    <g stroke="rgba(91,159,255,0.25)" stroke-width="0.8" fill="none">
+      <!-- Row 1 -->
+      <polygon points="100,60 130,77 130,111 100,128 70,111 70,77"/>
+      <polygon points="200,10 230,27 230,61 200,78 170,61 170,27"/>
+      <polygon points="300,60 330,77 330,111 300,128 270,111 270,77"/>
+      <polygon points="400,10 430,27 430,61 400,78 370,61 370,27"/>
+      <polygon points="500,60 530,77 530,111 500,128 470,111 470,77"/>
+      <polygon points="600,10 630,27 630,61 600,78 570,61 570,27"/>
+      <polygon points="700,60 730,77 730,111 700,128 670,111 670,77"/>
+      <polygon points="800,10 830,27 830,61 800,78 770,61 770,27"/>
+      <polygon points="900,60 930,77 930,111 900,128 870,111 870,77"/>
+      <polygon points="1000,10 1030,27 1030,61 1000,78 970,61 970,27"/>
+      <polygon points="1100,60 1130,77 1130,111 1100,128 1070,111 1070,77"/>
+      <polygon points="1200,10 1230,27 1230,61 1200,78 1170,61 1170,27"/>
+      <polygon points="1300,60 1330,77 1330,111 1300,128 1270,111 1270,77"/>
+      <polygon points="1400,10 1430,27 1430,61 1400,78 1370,61 1370,27"/>
+      <!-- Row 2 -->
+      <polygon points="150,145 180,162 180,196 150,213 120,196 120,162"/>
+      <polygon points="250,95 280,112 280,146 250,163 220,146 220,112"/>
+      <polygon points="350,145 380,162 380,196 350,213 320,196 320,162"/>
+      <polygon points="450,95 480,112 480,146 450,163 420,146 420,112"/>
+      <polygon points="550,145 580,162 580,196 550,213 520,196 520,162"/>
+      <polygon points="650,95 680,112 680,146 650,163 620,146 620,112"/>
+      <polygon points="750,145 780,162 780,196 750,213 720,196 720,162"/>
+      <polygon points="850,95 880,112 880,146 850,163 820,146 820,112"/>
+      <polygon points="950,145 980,162 980,196 950,213 920,196 920,162"/>
+      <polygon points="1050,95 1080,112 1080,146 1050,163 1020,146 1020,112"/>
+      <polygon points="1150,145 1180,162 1180,196 1150,213 1120,196 1120,162"/>
+      <polygon points="1250,95 1280,112 1280,146 1250,163 1220,146 1220,112"/>
+      <polygon points="1350,145 1380,162 1380,196 1350,213 1320,196 1320,162"/>
+      <!-- Row 3 -->
+      <polygon points="100,230 130,247 130,281 100,298 70,281 70,247"/>
+      <polygon points="200,180 230,197 230,231 200,248 170,231 170,197"/>
+      <polygon points="300,230 330,247 330,281 300,298 270,281 270,247"/>
+      <polygon points="400,180 430,197 430,231 400,248 370,231 370,197"/>
+      <polygon points="500,230 530,247 530,281 500,298 470,281 470,247"/>
+      <!-- Glow dots at intersections -->
+      <circle cx="130" cy="77" r="2.5" fill="rgba(91,159,255,0.6)" stroke="none"/>
+      <circle cx="230" cy="27" r="2.5" fill="rgba(91,159,255,0.6)" stroke="none"/>
+      <circle cx="430" cy="27" r="3"   fill="rgba(91,159,255,0.8)" stroke="none"/>
+      <circle cx="630" cy="27" r="2"   fill="rgba(91,159,255,0.5)" stroke="none"/>
+      <circle cx="830" cy="27" r="3.5" fill="rgba(91,159,255,0.9)" stroke="none"/>
+      <circle cx="1030" cy="27" r="2"  fill="rgba(91,159,255,0.5)" stroke="none"/>
+      <circle cx="180" cy="162" r="2"  fill="rgba(91,159,255,0.5)" stroke="none"/>
+      <circle cx="380" cy="162" r="2.5" fill="rgba(91,159,255,0.6)" stroke="none"/>
+    </g>
+  </svg>
+</div>
+
+<div class="glow-orb top-right"    aria-hidden="true"></div>
+<div class="glow-orb bottom-left"  aria-hidden="true"></div>
+
+<!-- ══════════════════════════════
+   NAV
+══════════════════════════════ -->
+<nav>
+  <!-- LOGO -->
+  <a href="#hero" class="nav-logo">
+    <div class="logo-icon">
+      <!-- Ai CentX stylized mark: mountain/flame A + dot i -->
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- A shape — triangular mountain -->
+        <path d="M4 23L11 5L14 11L11 17H7L4 23Z"
+              fill="white" opacity="0.95"/>
+        <!-- Flame swoosh on the A -->
+        <path d="M9 17C8 14 10 11 11 5C12.5 9 13 12 11 17"
+              fill="rgba(91,159,255,0.7)"/>
+        <!-- i stem -->
+        <rect x="18" y="13" width="3" height="9" rx="1.5" fill="white"/>
+        <!-- i dot -->
+        <circle cx="19.5" cy="9" r="2.2" fill="white"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-centx">CentX</span>
+      <span class="logo-sub">Artificial Intelligence</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about"          data-i18n="nav_about">About</a></li>
+    <li><a href="#services"       data-i18n="nav_services">Services</a></li>
+    <li><a href="#how"            data-i18n="nav_how">How It Works</a></li>
+    <li><a href="#case-studies"   data-i18n="nav_cases">Cases</a></li>
+    <li><a href="#reviews"        data-i18n="nav_reviews">Reviews</a></li>
+    <li><a href="#linkedin-posts" data-i18n="nav_linkedin">LinkedIn</a></li>
+    <li><a href="#faq"            data-i18n="nav_faq">FAQ</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">
+        <img class="flag" src="https://flagcdn.com/gb.svg" alt="British flag" title="English"/>
+        EN
+      </button>
+      <button class="lang-btn" onclick="setLang('es')">
+        <img class="flag" src="https://flagcdn.com/es.svg" alt="Spain flag" title="Español"/>
+        ES
+      </button>
+      <button class="lang-btn" onclick="setLang('pt')">
+        <img class="flag" src="https://flagcdn.com/br.svg" alt="Brazil flag" title="Português"/>
+        PT
+      </button>
+    </div>
+    <!-- Social follow buttons -->
+    <a href="https://www.linkedin.com/company/ai-centxx/" target="_blank" rel="noopener" class="btn-linkedin" aria-label="Follow on LinkedIn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <span class="li-txt">Follow</span>
+    </a>
+    <a href="https://www.instagram.com/ai_centx/" target="_blank" rel="noopener" class="btn-instagram" aria-label="Follow on Instagram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      <span class="ig-txt">Follow</span>
+    </a>
+    <a href="https://aicent.substack.com/" target="_blank" rel="noopener" class="btn-substack" aria-label="Subscribe to Newsletter">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V6.116h21.08v2.126zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.126h21.08V0z"/></svg>
+      <span class="ss-txt">Newsletter</span>
+    </a>
+    <!-- CTA BUTTON TOP RIGHT -->
+    <a href="#contact" class="btn-nav-cta" data-short="→">
+      <span data-i18n="nav_cta">Get Started</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════
+   HERO
+══════════════════════════════ -->
+<section id="hero">
+  <div class="label-tag" data-i18n="hero_tag">Business Management &amp; Digital Transformation</div>
+
+  <h1 class="hero-title">
+    <span class="line-fill"  data-i18n="hero_l1">Your Trusted</span>
+    <span class="line-glow"  data-i18n="hero_l2">Partner</span>
+    <span class="line-fill hero-inline-row">
+      <span data-i18n="hero_l3">for Business</span>
+      <span data-i18n="hero_l4"> Growth</span>
+    </span>
+  </h1>
+
+  <p class="hero-sub" data-i18n="hero_sub">
+    AI CentX helps businesses optimize operations, streamline processes, and leverage cutting-edge technology to drive sustainable growth and innovation.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#contact"  class="btn-primary" data-i18n="hero_cta1">Start Transforming</a>
+    <a href="#services" class="btn-outline"  data-i18n="hero_cta2">Our Services</a>
+    <a href="#about"    class="btn-outline"  data-i18n="hero_cta3">Transformation Model</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">20<span>+</span></span>
+      <span class="stat-label" data-i18n="stat1">Years of Experience</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">100<span>+</span></span>
+      <span class="stat-label" data-i18n="stat2">Businesses Transformed</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">6</span>
+      <span class="stat-label" data-i18n="stat3">Areas of Expertise</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+   ABOUT
+══════════════════════════════ -->
+<section id="about">
+  <div class="about-content reveal">
+    <div class="label-tag" data-i18n="about_label">About AI CentX</div>
+    <h2 data-i18n="about_h2">Your Trusted Business Management &amp; Digital Transformation Partner</h2>
+    <div class="about-text">
+      <p data-i18n="about_p1">With years of experience, we specialize in helping businesses optimize operations, streamline processes, and leverage cutting-edge technology to drive growth and innovation.</p>
+      <p data-i18n="about_p2">Whether you want to improve efficiency, adopt digital tools, or transform your business model, we provide tailored solutions designed around your unique needs and goals.</p>
+    </div>
+    <div class="expertise-pills" id="pillsContainer"></div>
+    <a href="#contact" class="btn-outline" style="width:fit-content; margin-top:1.75rem;" data-i18n="about_cta">Let's work together →</a>
+  </div>
+
+  <div class="about-visual reveal">
+    <div class="about-card main">
+      <!-- Integrated Transformation Model: People · Process · Technology · Data -->
+      <div class="itm-diagram">
+
+        <!-- Top-left: People -->
+        <div class="itm-cell itm-people">
+          <div class="itm-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="10" r="5" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M6 28c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="1.4" opacity=".5"/>
+              <path d="M2 26c0-3.314 1.79-6 4-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".5"/>
+            </svg>
+          </div>
+          <span class="itm-label" data-i18n="itm_people">People</span>
+          <span class="itm-desc" data-i18n="itm_people_desc">Change · Leadership · Culture</span>
+        </div>
+
+        <!-- Top-right: Process -->
+        <div class="itm-cell itm-process">
+          <div class="itm-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="5" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M16 4v4M16 24v4M4 16h4M24 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7.76 7.76l2.83 2.83M21.41 21.41l2.83 2.83M7.76 24.24l2.83-2.83M21.41 10.59l2.83-2.83" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="itm-label" data-i18n="itm_process">Process</span>
+          <span class="itm-desc" data-i18n="itm_process_desc">Lean · Six Sigma · Automation</span>
+        </div>
+
+        <!-- Centre core -->
+        <div class="itm-core">
+          <div class="itm-core-ring"></div>
+          <div class="itm-core-inner">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+              <path d="M4 23L11 5L14 11L11 17H7L4 23Z" fill="white" opacity="0.9"/>
+              <path d="M9 17C8 14 10 11 11 5C12.5 9 13 12 11 17" fill="rgba(91,159,255,0.8)"/>
+              <rect x="15.5" y="12" width="2.5" height="8" rx="1.25" fill="white"/>
+              <circle cx="16.75" cy="8.5" r="1.75" fill="white"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Bottom-left: Technology -->
+        <div class="itm-cell itm-tech">
+          <div class="itm-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect x="4" y="8" width="24" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M10 28h12M16 24v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              <rect x="8" y="12" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="14" y="12" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/>
+              <rect x="20" y="12" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M8 20h6M18 20h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="itm-label" data-i18n="itm_tech">Technology</span>
+          <span class="itm-desc" data-i18n="itm_tech_desc">AI · Cloud · IoT · Digital</span>
+        </div>
+
+        <!-- Bottom-right: Data -->
+        <div class="itm-cell itm-data">
+          <div class="itm-icon">
+            <svg viewBox="0 0 32 32" fill="none">
+              <ellipse cx="16" cy="8" rx="10" ry="4" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M6 8v6c0 2.21 4.477 4 10 4s10-1.79 10-4V8" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M6 14v6c0 2.21 4.477 4 10 4s10-1.79 10-4v-6" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <span class="itm-label" data-i18n="itm_data">Data</span>
+          <span class="itm-desc" data-i18n="itm_data_desc">Analytics · Insights · KPIs</span>
+        </div>
+
+        <!-- Connector lines SVG -->
+        <svg class="itm-connectors" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- cross lines through centre -->
+          <line x1="0" y1="100" x2="200" y2="100" stroke="rgba(26,75,255,0.25)" stroke-width="1" stroke-dasharray="4 3"/>
+          <line x1="100" y1="0" x2="100" y2="200" stroke="rgba(26,75,255,0.25)" stroke-width="1" stroke-dasharray="4 3"/>
+          <!-- diagonal connections -->
+          <line x1="50"  y1="50"  x2="150" y2="150" stroke="rgba(91,159,255,0.12)" stroke-width="1"/>
+          <line x1="150" y1="50"  x2="50"  y2="150" stroke="rgba(91,159,255,0.12)" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <div class="card-title" data-i18n="about_card_title">Integrated Transformation Model</div>
+      <div class="card-sub"   data-i18n="about_card_sub">People · Process · Technology · Data</div>
+    </div>
+    <div class="about-card floating">
+      <span class="float-icon">📐</span>
+      <div class="float-text">
+        <strong data-i18n="about_float_strong">Lean Six Sigma</strong>
+        <span data-i18n="about_float_span">Process Excellence</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+   SERVICES
+══════════════════════════════ -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem;" data-i18n="serv_label">What We Offer</div>
+    <h2 data-i18n="serv_h2">Our Areas of Expertise</h2>
+  </div>
+  <div class="services-grid stagger" id="servicesGrid"></div>
+</section>
+
+<!-- ══════════════════════════════
+   HOW IT WORKS
+══════════════════════════════ -->
+<section id="how">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem;" data-i18n="how_label">Our Approach</div>
+    <h2 data-i18n="how_h2">From Challenge to Transformation</h2>
+  </div>
+  <div class="steps stagger" id="stepsContainer"></div>
+</section>
+
+<!-- ══════════════════════════════
+   CASE STUDIES
+══════════════════════════════ -->
+<section id="case-studies" style="padding:7rem 5%; background:linear-gradient(180deg,var(--bg) 0%,var(--surface) 50%,var(--bg) 100%);">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem;" data-i18n="cs_label">Case Studies</div>
+    <h2 data-i18n="cs_h2">Transforming Business. Delivering Results.</h2>
+    <p style="color:var(--muted);font-size:0.95rem;margin-top:0.5rem;font-weight:300;max-width:54ch;margin-left:auto;margin-right:auto;" data-i18n="cs_sub">Four organisations. Four transformations. Measurable impact across EBITDA, costs, and revenue.</p>
+  </div>
+  <div class="cs-grid stagger" id="caseStudiesGrid"></div>
+</section>
+
+<!-- ══════════════════════════════
+   CLIENT REVIEWS
+══════════════════════════════ -->
+<section id="reviews" style="padding:7rem 5%;">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem;" data-i18n="rev_label">Client Reviews</div>
+    <h2 data-i18n="rev_h2">What Our Clients Say</h2>
+  </div>
+  <div class="reviews-grid stagger" id="reviewsGrid"></div>
+</section>
+
+<!-- ══════════════════════════════
+   CONTACT
+══════════════════════════════ -->
+<section id="contact">
+  <div class="contact-box reveal">
+    <div class="label-tag" style="margin:0 auto 1rem; display:flex; justify-content:center;" data-i18n="contact_label">Contact Us</div>
+    <h2 data-i18n="contact_h2">Let's Transform Your Business</h2>
+    <p class="contact-sub" data-i18n="contact_p">Tell us about your challenge. Our team will respond within 24 hours.</p>
+
+    <!-- Hidden iframe — receives Apps Script response silently, no CORS issues -->
+    <iframe name="sheet_iframe" id="sheet_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
+
+    <!-- Native HTML form targeting the hidden iframe.
+         Native form submission bypasses CORS and redirect issues entirely.
+         Apps Script receives e.parameter.name, e.parameter.email etc. cleanly. -->
+    <form id="contactForm"
+          action="https://script.google.com/macros/s/AKfycbyspKMkep1bm9VEfTurMTElKP5pOZ_gaw2fjNYZOXV_zWXBFM2hYxwKdaTv1wJpeJ_aYQ/exec"
+          method="POST"
+          target="sheet_iframe"
+          onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text"   name="name"     id="nameInput"    required/>
+        <input type="email"  name="email"    id="emailInput"   required/>
+      </div>
+      <div class="form-group">
+        <input type="text"   name="company"  id="companyInput"/>
+      </div>
+      <div class="form-group">
+        <textarea rows="4"   name="message"  id="msgInput"     required></textarea>
+      </div>
+      <!-- Hidden fields sent automatically with every submission -->
+      <input type="hidden" name="language"  id="langInput"  value="en"/>
+      <input type="hidden" name="source"    value="AI CentX Website"/>
+      <button type="submit" class="btn-primary form-submit" data-i18n="contact_btn">Send Message</button>
+    </form>
+
+    <!-- Loading state -->
+    <div class="form-loading" id="formLoading">
+      <div class="spinner"></div>
+      <p data-i18n="contact_sending">Sending your message…</p>
+    </div>
+
+    <!-- Success state -->
+    <div class="form-success" id="successMsg">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">✓</div>
+      <span data-i18n="contact_success">Message sent! We'll be in touch soon.</span>
+      <br/><br/>
+      <button onclick="resetContactForm()" class="btn-outline" style="font-size:0.78rem; padding:0.45rem 1rem;" data-i18n="contact_again">Send another message</button>
+    </div>
+
+    <!-- Error state -->
+    <div class="form-error" id="errorMsg">
+      <span data-i18n="contact_error">Something went wrong. Please email us directly.</span>
+      <br/><br/>
+      <button onclick="resetContactForm()" class="btn-outline" style="font-size:0.78rem; padding:0.45rem 1rem; border-color:rgba(255,107,107,0.4); color:#ff9999;" data-i18n="contact_retry">Try again</button>
+    </div>
+
+    <!-- Social follow inside contact -->
+    <div class="contact-social">
+      <span class="contact-social-label" data-i18n="contact_follow">Follow us</span>
+      <div class="social-bar">
+        <a href="https://www.linkedin.com/company/ai-centxx/" target="_blank" rel="noopener" class="btn-linkedin">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span data-i18n="social_linkedin">Follow on LinkedIn</span>
+        </a>
+        <a href="https://www.instagram.com/ai_centx/" target="_blank" rel="noopener" class="btn-instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          <span data-i18n="social_instagram">Follow on Instagram</span>
+        </a>
+        <a href="https://aicent.substack.com/" target="_blank" rel="noopener" class="btn-substack">
+          <svg viewBox="0 0 24 24"><path d="M22.539 8.242H1.46V6.116h21.08v2.126zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.126h21.08V0z"/></svg>
+          <span data-i18n="social_substack">Subscribe to Newsletter</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+   FAQ
+══════════════════════════════ -->
+<section id="faq">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem;" data-i18n="faq_label">FAQ</div>
+    <h2 data-i18n="faq_h2">Common Questions</h2>
+  </div>
+  <div class="faq-inner" id="faqList"></div>
+</section>
+
+<!-- ══════════════════════════════
+   LINKEDIN POSTS
+══════════════════════════════ -->
+<section id="linkedin-posts" style="padding:7rem 5%;">
+  <div class="section-header reveal">
+    <div class="label-tag" style="margin:0 auto 1rem; display:inline-flex; align-items:center; gap:0.5rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <span data-i18n="li_label">Latest from LinkedIn</span>
+    </div>
+    <h2 data-i18n="li_h2">Stay Up to Date</h2>
+    <p style="color:var(--muted); font-size:0.95rem; margin-top:0.5rem; font-weight:300;" data-i18n="li_sub">Follow AI CentX for insights on AI, digital transformation, and business innovation.</p>
+  </div>
+
+  <!-- LinkedIn Post Cards -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:1.5rem; max-width:920px; margin:0 auto 2.5rem;" class="reveal">
+
+    <!-- Post Card 1 -->
+    <article class="li-post-card">
+      <div class="li-post-header">
+        <div class="li-avatar">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <path d="M4 23L11 5L14 11L11 17H7L4 23Z" fill="white" opacity="0.95"/>
+            <path d="M9 17C8 14 10 11 11 5C12.5 9 13 12 11 17" fill="rgba(91,159,255,0.8)"/>
+            <rect x="18" y="13" width="3" height="9" rx="1.5" fill="white"/>
+            <circle cx="19.5" cy="9" r="2.2" fill="white"/>
+          </svg>
+        </div>
+        <div class="li-author">
+          <span class="li-name">AI CentX</span>
+          <span class="li-meta">Business Management &amp; Digital Transformation</span>
+        </div>
+        <svg class="li-logo" width="20" height="20" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </div>
+      <div class="li-post-tag">🌍 Technology Adoption</div>
+      <p class="li-post-body">While many countries are still <em>talking</em> about AI adoption, the ones embracing technology at scale are already pulling ahead.<br><br>The gap between those who act and those who wait is widening every quarter. The question isn't <em>if</em> your organization should transform — it's whether you'll lead or follow.</p>
+      <div class="li-post-footer">
+        <div class="li-reactions">
+          <span class="li-react-icon">👍</span>
+          <span class="li-react-icon">💡</span>
+          <span class="li-react-icon">🔥</span>
+          <span class="li-react-count">Reactions</span>
+        </div>
+        <a href="https://www.linkedin.com/posts/centx-ai_while-many-countries-are-still-talking-about-activity-7442034961752330240-xxPN"
+           target="_blank" rel="noopener" class="li-read-more" data-i18n="li_read_more">Read on LinkedIn →</a>
+      </div>
+    </article>
+
+    <!-- Post Card 2 -->
+    <article class="li-post-card">
+      <div class="li-post-header">
+        <div class="li-avatar">
+          <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+            <path d="M4 23L11 5L14 11L11 17H7L4 23Z" fill="white" opacity="0.95"/>
+            <path d="M9 17C8 14 10 11 11 5C12.5 9 13 12 11 17" fill="rgba(91,159,255,0.8)"/>
+            <rect x="18" y="13" width="3" height="9" rx="1.5" fill="white"/>
+            <circle cx="19.5" cy="9" r="2.2" fill="white"/>
+          </svg>
+        </div>
+        <div class="li-author">
+          <span class="li-name">AI CentX</span>
+          <span class="li-meta">Business Management &amp; Digital Transformation</span>
+        </div>
+        <svg class="li-logo" width="20" height="20" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </div>
+      <div class="li-post-tag">✈️ AI in Operations</div>
+      <p class="li-post-body">Ever wondered where your suitcase goes after check-in?<br><br>Behind every smooth airport experience is a complex web of automated systems, sensors, and real-time data — a perfect example of AI and technology working invisibly at scale.<br><br>This is exactly the kind of transformation we help organizations achieve.</p>
+      <div class="li-post-footer">
+        <div class="li-reactions">
+          <span class="li-react-icon">👍</span>
+          <span class="li-react-icon">🤖</span>
+          <span class="li-react-icon">💡</span>
+          <span class="li-react-count">Reactions</span>
+        </div>
+        <a href="https://www.linkedin.com/posts/centx-ai_ever-wondered-where-your-suitcase-goes-activity-7429343837711491072-qTpM"
+           target="_blank" rel="noopener" class="li-read-more" data-i18n="li_read_more">Read on LinkedIn →</a>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Follow CTA -->
+  <div style="text-align:center;" class="reveal">
+    <a href="https://www.linkedin.com/company/ai-centxx/" target="_blank" rel="noopener" class="btn-linkedin" style="font-size:0.88rem; padding:0.75rem 1.75rem;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      <span data-i18n="li_follow_btn">Follow AI CentX on LinkedIn</span>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+   FOOTER
+══════════════════════════════ -->
+<footer>
+  <div class="footer-left">
+    <a href="#hero" class="footer-logo nav-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 28 28" fill="none">
+          <path d="M4 23L11 5L14 11L11 17H7L4 23Z" fill="white" opacity="0.95"/>
+          <path d="M9 17C8 14 10 11 11 5C12.5 9 13 12 11 17" fill="rgba(91,159,255,0.7)"/>
+          <rect x="18" y="13" width="3" height="9" rx="1.5" fill="white"/>
+          <circle cx="19.5" cy="9" r="2.2" fill="white"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-centx">CentX</span>
+        <span class="logo-sub">Artificial Intelligence</span>
+      </div>
+    </a>
+    <span class="footer-copy">© 2025 AI CentX. <span data-i18n="footer_rights">All rights reserved.</span></span>
+  </div>
+
+  <div class="footer-social">
+    <a href="https://www.linkedin.com/company/ai-centxx/" target="_blank" rel="noopener" class="btn-linkedin" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://www.instagram.com/ai_centx/" target="_blank" rel="noopener" class="btn-instagram" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      Instagram
+    </a>
+    <a href="https://aicent.substack.com/" target="_blank" rel="noopener" class="btn-substack" aria-label="Newsletter">
+      <svg viewBox="0 0 24 24"><path d="M22.539 8.242H1.46V6.116h21.08v2.126zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.126h21.08V0z"/></svg>
+      Newsletter
+    </a>
+  </div>
+
+  <div class="footer-links">
+    <a href="#about"    data-i18n="nav_about">About</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#how"      data-i18n="nav_how">How It Works</a>
+    <a href="#contact"  data-i18n="footer_contact">Contact</a>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+   TRANSLATIONS + RENDER ENGINE
+══════════════════════════════════════════ -->
+<script>
+const T = {
+  en: {
+    nav_about:"About", nav_services:"Services", nav_how:"How It Works",
+    nav_faq:"FAQ", nav_cta:"Get Started",
+    hero_tag:"Business Management & Digital Transformation",
+    hero_l1:"Your Trusted", hero_l2:"Partner",
+    hero_l3:"for Business", hero_l4:" Growth",
+    hero_sub:"AI CentX helps businesses optimize operations, streamline processes, and leverage cutting-edge technology to drive sustainable growth and innovation.",
+    hero_cta1:"Start Transforming", hero_cta2:"Our Services", hero_cta3:"Transformation Model",
+    stat1:"Years of Experience", stat2:"Businesses Transformed", stat3:"Areas of Expertise",
+    about_label:"About AI CentX",
+    about_h2:"Your Trusted Business Management & Digital Transformation Partner",
+    about_p1:"With years of experience, we specialize in helping businesses optimize operations, streamline processes, and leverage cutting-edge technology to drive growth and innovation.",
+    about_p2:"Whether you want to improve efficiency, adopt digital tools, or transform your business model, we provide tailored solutions designed around your unique needs and goals.",
+    about_cta:"Let's work together \u2192",
+    about_card_title:"Integrated Transformation Model",
+    about_card_sub:"People \u00b7 Process \u00b7 Technology \u00b7 Data",
+    itm_people:"People", itm_people_desc:"Change \u00b7 Leadership \u00b7 Culture",
+    itm_process:"Process", itm_process_desc:"Lean \u00b7 Six Sigma \u00b7 Automation",
+    itm_tech:"Technology", itm_tech_desc:"AI \u00b7 Cloud \u00b7 IoT \u00b7 Digital",
+    itm_data:"Data", itm_data_desc:"Analytics \u00b7 Insights \u00b7 KPIs",
+    about_float_strong:"Lean Six Sigma",
+    about_float_span:"Process Excellence",
+    pills:["Strategic Management","Digital Transformation","Process Optimization","Change Management","Lean Six Sigma","AI & Tech Adoption"],
+    serv_label:"What We Offer", serv_h2:"Our Areas of Expertise",
+    services:[
+      {icon:"🎯",name:"Strategic Business Management",desc:"We align your organization\u2019s vision, resources, and operations to deliver measurable business results. From strategic planning to performance management, we help leaders make informed decisions with confidence."},
+      {icon:"🔄",name:"Digital Transformation Roadmaps",desc:"We design clear, actionable transformation roadmaps that guide your organization through the adoption of digital technologies \u2014 phased, practical, and aligned with your business priorities."},
+      {icon:"⚙️",name:"Process Optimization & Automation",desc:"We identify bottlenecks, eliminate waste, and redesign workflows using proven methodologies. By integrating automation where it matters most, we help your team do more with less."},
+      {icon:"🤝",name:"Organizational Change Management",desc:"Successful transformation requires people. We build change readiness, design communication strategies, and support leadership to ensure your teams adopt new ways of working effectively."},
+      {icon:"📐",name:"Lean Six Sigma Training & Deployment",desc:"From Yellow Belt awareness to Black Belt deployment, we deliver Lean Six Sigma training programs and hands-on project coaching to embed a culture of continuous improvement."},
+      {icon:"🤖",name:"AI Development & Technology Adoption",desc:"We help you identify, evaluate, and implement the right technologies \u2014 AI, Cloud, IoT, and more \u2014 integrated into your operations in ways that are practical, secure, and built to scale."}
+    ],
+    how_label:"Our Approach", how_h2:"From Challenge to Transformation",
+    steps:[
+      {title:"Diagnose",desc:"We start by understanding your business context, current challenges, and goals \u2014 conducting a thorough assessment of your processes, technology landscape, and organizational culture."},
+      {title:"Design",desc:"We co-create a tailored strategy and roadmap, defining clear milestones, KPIs, and technology choices aligned to your priorities and budget."},
+      {title:"Deploy",desc:"We implement solutions in structured phases \u2014 managing change, training your teams, integrating tools, and ensuring every step delivers measurable value."},
+      {title:"Sustain",desc:"We embed continuous improvement practices into your organization, ensuring long-term adoption, ongoing optimization, and measurable ROI well beyond the initial engagement."}
+    ],
+    contact_label:"Contact Us", contact_h2:"Let\u2019s Transform Your Business",
+    contact_p:"Tell us about your challenge. Our team will respond within 24 hours.",
+    contact_btn:"Send Message",
+    contact_success:"\u2713 Message sent! We\u2019ll be in touch soon.",
+    name_ph:"Your name", email_ph:"Your email",
+    company_ph:"Your company (optional)",
+    msg_ph:"Describe your challenge or what you\u2019d like to achieve\u2026",
+    faq_label:"FAQ", faq_h2:"Common Questions",
+    faqs:[
+      {q:"What types of businesses does AI CentX work with?",a:"We work with businesses of all sizes \u2014 from growing SMEs looking to professionalize their operations, to large enterprises undergoing complex digital transformations. Our solutions are always tailored to your specific industry, scale, and objectives."},
+      {q:"What is Lean Six Sigma and how can it benefit my organization?",a:"Lean Six Sigma is a proven methodology that combines Lean (waste elimination) and Six Sigma (defect reduction) to improve the speed, quality, and efficiency of business processes. We offer training programs from introductory to advanced levels, as well as hands-on deployment support."},
+      {q:"How do you approach AI and technology adoption?",a:"We take a business-first approach \u2014 evaluating your readiness, identifying the highest-impact use cases, and guiding you through selection, implementation, and change management. We work with AI, Cloud, IoT, and other emerging technologies in a way that is practical, secure, and aligned with your goals."},
+      {q:"How long does a typical engagement last?",a:"Focused optimization projects may take 4\u20138 weeks. Full digital transformation programs typically span 3\u201312 months. We design every engagement to deliver value at each phase, so you see results throughout the process."},
+      {q:"How do I get started with AI CentX?",a:"Simply reach out through our contact form. We\u2019ll schedule a no-obligation discovery session to understand your needs and determine how we can best support your business transformation journey."}
+    ],
+    nav_linkedin:"LinkedIn",
+    li_label:"Latest from LinkedIn", li_h2:"Stay Up to Date",
+    li_sub:"Follow AI CentX for insights on AI, digital transformation, and business innovation.",
+    li_follow_btn:"Follow AI CentX on LinkedIn",
+    li_read_more:"Read on LinkedIn →",
+    nav_cases:"Cases", nav_reviews:"Reviews",
+    cs_label:"Case Studies", cs_h2:"Transforming Business. Delivering Results.",
+    cs_sub:"Four organisations. Four transformations. Measurable impact across EBITDA, costs, and revenue.",
+    rev_label:"Client Reviews", rev_h2:"What Our Clients Say",
+    caseStudies:[
+      {
+        icon:"🏭", industry:"Manufacturing", company:"NordPack Industries",
+        region:"Germany · 1,800 employees",
+        challenge:"NordPack faced a 22% defect rate in its packaging lines, excess inventory worth €4.2M, and rising input costs squeezing EBITDA to near zero. Leadership lacked a systematic framework to address root causes.",
+        metrics:[
+          {value:"+31%", key:"EBITDA Improvement", color:"pos"},
+          {value:"-38%", key:"Operating Costs", color:"neg"},
+          {value:"-89%", key:"Defect Rate", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnose", detail:"Value-stream mapping revealed 14 waste points across 3 production lines"},
+          {name:"Design",   detail:"Lean Six Sigma Black Belt roadmap with 6 DMAIC projects and KPI dashboard"},
+          {name:"Deploy",   detail:"Cross-functional kaizen events, automated quality gates, inventory JIT model"},
+          {name:"Sustain",  detail:"Internal Green Belt programme; monthly governance reviews; 18-month ROI locked"}
+        ],
+        result:"<strong>€6.1M in annualised savings</strong> within 14 months. EBITDA rose from 2.1% to 14.7%. NordPack eliminated its legacy defect backlog and launched a continuous-improvement centre of excellence."
+      },
+      {
+        icon:"🏥", industry:"Healthcare", company:"VidaSaúde Hospital Group",
+        region:"Brazil · 3 hospitals · 4,200 staff",
+        challenge:"Patient discharge delays averaged 6.8 hours, surgical theatre utilisation was only 61%, and administrative rework consumed 34% of staff time — directly driving cost overruns and patient dissatisfaction.",
+        metrics:[
+          {value:"+27%", key:"EBITDA Margin", color:"pos"},
+          {value:"-41%", key:"Discharge Time", color:"neg"},
+          {value:"+19%", key:"Theatre Utilisation", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnose", detail:"Process mining across 3 sites surfaced 11 bottlenecks in patient flow"},
+          {name:"Design",   detail:"Digital transformation roadmap: EHR integration, AI triage, and staff scheduling AI"},
+          {name:"Deploy",   detail:"Phased rollout across 3 hospitals; change management programme for 4,200 staff"},
+          {name:"Sustain",  detail:"Real-time operational dashboard; quarterly Six Sigma review board established"}
+        ],
+        result:"<strong>BRL 38M in annual cost avoidance</strong> and a 27-point EBITDA improvement. Patient satisfaction scores rose from 6.2 to 9.1 / 10. VidaSaúde reduced agency staff spend by 44%."
+      },
+      {
+        icon:"🛒", industry:"Retail & E-Commerce", company:"Meridian Commerce Group",
+        region:"United States · 280 stores",
+        challenge:"Meridian's omnichannel growth stalled at 3% YoY as fulfilment errors, manual inventory reconciliation, and a fragmented tech stack made same-day delivery impossible. Sales conversion online sat at 1.8%.",
+        metrics:[
+          {value:"+48%", key:"Online Sales", color:"pos"},
+          {value:"-29%", key:"Fulfilment Cost", color:"neg"},
+          {value:"+2.1×", key:"Conversion Rate", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnose", detail:"Customer journey audit and supply chain mapping across 280 stores and 3 DCs"},
+          {name:"Design",   detail:"AI-powered demand forecasting, unified commerce platform, and last-mile strategy"},
+          {name:"Deploy",   detail:"12-week phased platform migration; staff reskilling across 280 locations"},
+          {name:"Sustain",  detail:"Predictive replenishment engine; A/B testing culture embedded in digital team"}
+        ],
+        result:"Online revenue grew <strong>from $42M to $62M</strong> in 11 months. Fulfilment errors dropped 76%. The AI demand model reduced overstock write-offs by $8.4M annually."
+      },
+      {
+        icon:"✈️", industry:"Logistics & Aviation", company:"AeroLogix Cargo",
+        region:"UAE · 14 countries · 6,500 staff",
+        challenge:"AeroLogix faced 31% idle capacity on key routes, a 19-hour average shipment-tracking delay, and escalating fuel surcharges eroding per-unit margins. Customer retention had fallen to 68% due to unreliable ETAs.",
+        metrics:[
+          {value:"+22%", key:"EBITDA Growth", color:"pos"},
+          {value:"-34%", key:"Idle Capacity", color:"neg"},
+          {value:"+18%", key:"Revenue / Route", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnose", detail:"IoT telemetry analysis across 14 hub airports identified 9 root-cause delay drivers"},
+          {name:"Design",   detail:"AI route-optimisation model + IoT real-time tracking platform blueprint"},
+          {name:"Deploy",   detail:"IoT sensor rollout across 6,500 shipment units; AI model trained on 3 years of data"},
+          {name:"Sustain",  detail:"24/7 control-tower dashboard; ML model retrained quarterly; NPS tracking"}
+        ],
+        result:"<strong>$31M incremental EBITDA</strong> in year one. Customer retention recovered to 91%. AeroLogix now offers sub-2-hour shipment visibility, winning three new enterprise accounts worth $140M."
+      }
+    ],
+    reviews:[
+      {
+        text:"AI CentX didn't just deliver a strategy document — they rolled up their sleeves and drove the transformation alongside us. Our EBITDA improvement was beyond anything we projected. Outstanding partner.",
+        name:"Marcus Weber", role:"COO, NordPack Industries", initials:"MW"
+      },
+      {
+        text:"The Lean Six Sigma programme transformed how our teams think about problems. Patient outcomes improved, costs dropped, and our staff are genuinely engaged in continuous improvement. Remarkable impact.",
+        name:"Dr. Fernanda Lopes", role:"CEO, VidaSaúde Hospital Group", initials:"FL"
+      },
+      {
+        text:"The AI-powered demand forecasting alone paid for the entire engagement in the first quarter. The AI CentX team understood retail deeply and delivered practical solutions, not theory. Highly recommend.",
+        name:"James Callahan", role:"Chief Digital Officer, Meridian Commerce Group", initials:"JC"
+      },
+      {
+        text:"We interviewed five consulting firms. AI CentX was the only one that could bridge operational excellence, technology adoption, and people change simultaneously. The results proved us right.",
+        name:"Sara Al-Rashidi", role:"VP Strategy, AeroLogix Cargo", initials:"SR"
+      }
+    ],
+    footer_rights:"All rights reserved.", footer_contact:"Contact",
+    contact_follow:"Follow us",
+    social_linkedin:"Follow on LinkedIn",
+    social_instagram:"Follow on Instagram",
+    social_substack:"Subscribe to Newsletter",
+    contact_sending:"Sending your message\u2026",
+    contact_success:"Message sent! We\u2019ll be in touch soon.",
+    contact_error:"Something went wrong. Please try again or email us directly.",
+    contact_again:"Send another message",
+    contact_retry:"Try again"
+  },
+
+  es: {
+    nav_about:"Acerca de", nav_services:"Servicios", nav_how:"C\u00f3mo Funciona",
+    nav_faq:"FAQ", nav_cta:"Comenzar",
+    hero_tag:"Gesti\u00f3n Empresarial y Transformaci\u00f3n Digital",
+    hero_l1:"Su Socio de", hero_l2:"Confianza",
+    hero_l3:"para el Crecimiento", hero_l4:" Empresarial",
+    hero_sub:"AI CentX ayuda a las empresas a optimizar operaciones, simplificar procesos y aprovechar tecnolog\u00eda de vanguardia para impulsar el crecimiento sostenible y la innovaci\u00f3n.",
+    hero_cta1:"Comencemos", hero_cta2:"Nuestros Servicios", hero_cta3:"Modelo de Transformación",
+    stat1:"A\u00f1os de Experiencia", stat2:"Empresas Transformadas", stat3:"\u00c1reas de Especializaci\u00f3n",
+    about_label:"Acerca de AI CentX",
+    about_h2:"Su Socio de Confianza en Gesti\u00f3n Empresarial y Transformaci\u00f3n Digital",
+    about_p1:"Con a\u00f1os de experiencia, nos especializamos en ayudar a las empresas a optimizar operaciones, simplificar procesos y aprovechar tecnolog\u00eda de vanguardia para impulsar el crecimiento y la innovaci\u00f3n.",
+    about_p2:"Ya sea que desee mejorar la eficiencia, adoptar herramientas digitales o transformar su modelo de negocio, ofrecemos soluciones personalizadas dise\u00f1adas seg\u00fan sus necesidades y objetivos \u00fanicos.",
+    about_cta:"Trabajemos juntos \u2192",
+    about_card_title:"Modelo de Transformaci\u00f3n Integrado",
+    about_card_sub:"Personas \u00b7 Proceso \u00b7 Tecnolog\u00eda \u00b7 Datos",
+    itm_people:"Personas", itm_people_desc:"Cambio \u00b7 Liderazgo \u00b7 Cultura",
+    itm_process:"Proceso", itm_process_desc:"Lean \u00b7 Six Sigma \u00b7 Automatizaci\u00f3n",
+    itm_tech:"Tecnolog\u00eda", itm_tech_desc:"IA \u00b7 Cloud \u00b7 IoT \u00b7 Digital",
+    itm_data:"Datos", itm_data_desc:"An\u00e1lisis \u00b7 Insights \u00b7 KPIs",
+    about_float_strong:"Lean Six Sigma",
+    about_float_span:"Excelencia en Procesos",
+    pills:["Gesti\u00f3n Estrat\u00e9gica","Transformaci\u00f3n Digital","Optimizaci\u00f3n de Procesos","Gesti\u00f3n del Cambio","Lean Six Sigma","Adopci\u00f3n de IA y Tecnolog\u00eda"],
+    serv_label:"Lo Que Ofrecemos", serv_h2:"Nuestras \u00c1reas de Especializaci\u00f3n",
+    services:[
+      {icon:"🎯",name:"Gesti\u00f3n Estrat\u00e9gica Empresarial",desc:"Alineamos la visi\u00f3n, los recursos y las operaciones de su organizaci\u00f3n para obtener resultados empresariales medibles. Desde la planificaci\u00f3n estrat\u00e9gica hasta la gesti\u00f3n del desempe\u00f1o, ayudamos a los l\u00edderes a tomar decisiones informadas con confianza."},
+      {icon:"🔄",name:"Hojas de Ruta de Transformaci\u00f3n Digital",desc:"Dise\u00f1amos hojas de ruta claras y accionables que gu\u00edan a su organizaci\u00f3n en la adopci\u00f3n de tecnolog\u00edas digitales \u2014 escalonadas, pr\u00e1cticas y alineadas con sus prioridades de negocio."},
+      {icon:"⚙️",name:"Optimizaci\u00f3n y Automatizaci\u00f3n de Procesos",desc:"Identificamos cuellos de botella, eliminamos desperdicios y redise\u00f1amos flujos de trabajo usando metodolog\u00edas probadas. Al integrar automatizaci\u00f3n donde m\u00e1s importa, ayudamos a su equipo a hacer m\u00e1s con menos."},
+      {icon:"🤝",name:"Gesti\u00f3n del Cambio Organizacional",desc:"La transformaci\u00f3n exitosa requiere personas. Desarrollamos la preparaci\u00f3n para el cambio, dise\u00f1amos estrategias de comunicaci\u00f3n y apoyamos al liderazgo para que los equipos adopten nuevas formas de trabajar."},
+      {icon:"📐",name:"Formaci\u00f3n y Despliegue de Lean Six Sigma",desc:"Desde la concienciaci\u00f3n Yellow Belt hasta el despliegue Black Belt, ofrecemos programas de formaci\u00f3n en Lean Six Sigma y acompa\u00f1amiento pr\u00e1ctico para fomentar una cultura de mejora continua."},
+      {icon:"🤖",name:"Desarrollo de IA y Adopci\u00f3n Tecnol\u00f3gica",desc:"Le ayudamos a identificar, evaluar e implementar las tecnolog\u00edas adecuadas \u2014 IA, Cloud, IoT y m\u00e1s \u2014 integradas en sus operaciones de manera pr\u00e1ctica, segura y dise\u00f1ada para escalar."}
+    ],
+    how_label:"Nuestro Enfoque", how_h2:"Del Desaf\u00edo a la Transformaci\u00f3n",
+    steps:[
+      {title:"Diagn\u00f3stico",desc:"Comenzamos entendiendo su contexto empresarial, desaf\u00edos actuales y objetivos \u2014 realizando una evaluaci\u00f3n profunda de sus procesos, tecnolog\u00eda y cultura organizacional."},
+      {title:"Dise\u00f1o",desc:"Co-creamos una estrategia y hoja de ruta personalizada, definiendo hitos claros, KPIs y opciones tecnol\u00f3gicas alineadas con sus prioridades y presupuesto."},
+      {title:"Implementaci\u00f3n",desc:"Ejecutamos las soluciones en fases estructuradas \u2014 gestionando el cambio, capacitando a su equipo, integrando herramientas y asegurando que cada paso genere valor medible."},
+      {title:"Sostenibilidad",desc:"Integramos pr\u00e1cticas de mejora continua en su organizaci\u00f3n, garantizando la adopci\u00f3n a largo plazo, la optimizaci\u00f3n continua y un ROI medible m\u00e1s all\u00e1 del compromiso inicial."}
+    ],
+    contact_label:"Cont\u00e1ctanos", contact_h2:"Transformemos Su Negocio",
+    contact_p:"Cu\u00e9ntenos su desaf\u00edo. Nuestro equipo responder\u00e1 en menos de 24 horas.",
+    contact_btn:"Enviar Mensaje",
+    contact_success:"\u2713 \u00a1Mensaje enviado! Nos pondremos en contacto pronto.",
+    name_ph:"Su nombre", email_ph:"Su correo electr\u00f3nico",
+    company_ph:"Su empresa (opcional)",
+    msg_ph:"Describa su desaf\u00edo o lo que le gustar\u00eda lograr\u2026",
+    faq_label:"Preguntas Frecuentes", faq_h2:"Preguntas Comunes",
+    faqs:[
+      {q:"\u00bfCon qu\u00e9 tipo de empresas trabaja AI CentX?",a:"Trabajamos con empresas de todos los tama\u00f1os \u2014 desde PYMEs en crecimiento hasta grandes corporaciones en procesos de transformaci\u00f3n digital compleja. Nuestras soluciones siempre se adaptan a su industria, escala y objetivos espec\u00edficos."},
+      {q:"\u00bfQu\u00e9 es Lean Six Sigma y c\u00f3mo puede beneficiar a mi organizaci\u00f3n?",a:"Lean Six Sigma es una metodolog\u00eda probada que combina Lean (eliminaci\u00f3n de desperdicios) y Six Sigma (reducci\u00f3n de defectos) para mejorar la velocidad, calidad y eficiencia de los procesos. Ofrecemos programas de formaci\u00f3n desde nivel introductorio hasta avanzado."},
+      {q:"\u00bfC\u00f3mo abordan la adopci\u00f3n de IA y tecnolog\u00eda?",a:"Adoptamos un enfoque centrado en el negocio \u2014 evaluando su madurez, identificando los casos de uso de mayor impacto y acompa\u00f1\u00e1ndole en la selecci\u00f3n, implementaci\u00f3n y gesti\u00f3n del cambio con IA, Cloud, IoT y otras tecnolog\u00edas emergentes."},
+      {q:"\u00bfCu\u00e1nto dura un proyecto t\u00edpico?",a:"Los proyectos de optimizaci\u00f3n focalizados pueden durar de 4 a 8 semanas. Los programas completos de transformaci\u00f3n digital suelen abarcar entre 3 y 12 meses. Dise\u00f1amos cada proyecto para entregar valor en cada fase."},
+      {q:"\u00bfC\u00f3mo empiezo con AI CentX?",a:"Simplemente cont\u00e1ctenos a trav\u00e9s de nuestro formulario. Organizaremos una sesi\u00f3n de descubrimiento sin compromiso para entender sus necesidades y determinar c\u00f3mo podemos apoyar mejor su proceso de transformaci\u00f3n empresarial."}
+    ],
+    nav_linkedin:"LinkedIn",
+    li_label:"Lo último en LinkedIn", li_h2:"Mantente al Día",
+    li_sub:"Sigue a AI CentX para conocer las últimas novedades en IA, transformación digital e innovación empresarial.",
+    li_follow_btn:"Seguir AI CentX en LinkedIn",
+    li_read_more:"Leer en LinkedIn →",
+    nav_cases:"Casos", nav_reviews:"Opiniones",
+    cs_label:"Casos de Éxito", cs_h2:"Transformando Empresas. Generando Resultados.",
+    cs_sub:"Cuatro organizaciones. Cuatro transformaciones. Impacto medible en EBITDA, costos e ingresos.",
+    rev_label:"Opiniones de Clientes", rev_h2:"Lo Que Dicen Nuestros Clientes",
+    caseStudies:[
+      {
+        icon:"🏭", industry:"Manufactura", company:"NordPack Industries",
+        region:"Alemania · 1.800 empleados",
+        challenge:"NordPack enfrentaba una tasa de defectos del 22% en sus líneas de empaque, un exceso de inventario por €4,2M y costos crecientes que comprimían el EBITDA casi a cero. La dirección carecía de un marco sistemático para abordar las causas raíz.",
+        metrics:[
+          {value:"+31%", key:"Mejora EBITDA", color:"pos"},
+          {value:"-38%", key:"Costos Operativos", color:"neg"},
+          {value:"-89%", key:"Tasa de Defectos", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnóstico", detail:"Mapeo de flujo de valor reveló 14 puntos de desperdicio en 3 líneas de producción"},
+          {name:"Diseño",      detail:"Hoja de ruta Lean Six Sigma con 6 proyectos DMAIC y panel de KPIs"},
+          {name:"Implementación", detail:"Eventos kaizen interfuncionales, controles de calidad automatizados, modelo JIT"},
+          {name:"Sostenibilidad", detail:"Programa interno Green Belt; revisiones mensuales de gobernanza; ROI a 18 meses"}
+        ],
+        result:"<strong>€6,1M en ahorros anualizados</strong> en 14 meses. El EBITDA subió del 2,1% al 14,7%. NordPack eliminó su cartera de defectos y lanzó un centro de excelencia de mejora continua."
+      },
+      {
+        icon:"🏥", industry:"Salud", company:"VidaSaúde Hospital Group",
+        region:"Brasil · 3 hospitales · 4.200 empleados",
+        challenge:"Los retrasos en el alta de pacientes promediaban 6,8 horas, la utilización del quirófano era solo del 61% y el retrabajo administrativo consumía el 34% del tiempo del personal — generando sobrecostos e insatisfacción.",
+        metrics:[
+          {value:"+27%", key:"Margen EBITDA", color:"pos"},
+          {value:"-41%", key:"Tiempo de Alta", color:"neg"},
+          {value:"+19%", key:"Uso de Quirófano", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnóstico", detail:"Minería de procesos en 3 sedes identificó 11 cuellos de botella en el flujo de pacientes"},
+          {name:"Diseño",      detail:"Hoja de ruta de transformación digital: integración HCE, triaje IA, IA de turnos"},
+          {name:"Implementación", detail:"Despliegue gradual en 3 hospitales; programa de gestión del cambio para 4.200 personas"},
+          {name:"Sostenibilidad", detail:"Panel operativo en tiempo real; consejo de revisión Six Sigma trimestral"}
+        ],
+        result:"<strong>BRL 38M en ahorro anual</strong> y 27 puntos de mejora en EBITDA. La satisfacción del paciente subió de 6,2 a 9,1 / 10. VidaSaúde redujo el gasto en personal de agencia un 44%."
+      },
+      {
+        icon:"🛒", industry:"Retail y E-Commerce", company:"Meridian Commerce Group",
+        region:"Estados Unidos · 280 tiendas",
+        challenge:"El crecimiento omnicanal de Meridian se estancó en un 3% anual por errores de fulfillment, conciliación manual de inventario y una plataforma tecnológica fragmentada. La conversión en línea era solo del 1,8%.",
+        metrics:[
+          {value:"+48%", key:"Ventas Online", color:"pos"},
+          {value:"-29%", key:"Costo de Fulfillment", color:"neg"},
+          {value:"+2,1×", key:"Tasa de Conversión", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnóstico", detail:"Auditoría del journey del cliente y mapeo de cadena de suministro en 280 tiendas"},
+          {name:"Diseño",      detail:"Pronóstico de demanda con IA, plataforma de comercio unificado y estrategia last-mile"},
+          {name:"Implementación", detail:"Migración de plataforma en 12 semanas; recapacitación del personal en 280 ubicaciones"},
+          {name:"Sostenibilidad", detail:"Motor de reposición predictiva; cultura de A/B testing incorporada en equipo digital"}
+        ],
+        result:"Los ingresos en línea crecieron <strong>de $42M a $62M</strong> en 11 meses. Los errores de fulfillment cayeron un 76%. El modelo de demanda IA redujo las mermas de sobrestock en $8,4M anuales."
+      },
+      {
+        icon:"✈️", industry:"Logística y Aviación", company:"AeroLogix Cargo",
+        region:"EAU · 14 países · 6.500 empleados",
+        challenge:"AeroLogix enfrentaba un 31% de capacidad ociosa en rutas clave, un retraso promedio de 19 horas en el seguimiento de envíos y márgenes erosionados por sobrecargos de combustible. La retención de clientes había caído al 68%.",
+        metrics:[
+          {value:"+22%", key:"Crecimiento EBITDA", color:"pos"},
+          {value:"-34%", key:"Capacidad Ociosa", color:"neg"},
+          {value:"+18%", key:"Ingresos / Ruta", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagnóstico", detail:"Análisis de telemetría IoT en 14 aeropuertos hub identificó 9 causas de retraso"},
+          {name:"Diseño",      detail:"Modelo de optimización de rutas con IA + plataforma de seguimiento IoT en tiempo real"},
+          {name:"Implementación", detail:"Despliegue de sensores IoT en 6.500 unidades; modelo IA entrenado con 3 años de datos"},
+          {name:"Sostenibilidad", detail:"Panel de control tower 24/7; modelo ML reentrenado trimestralmente; seguimiento NPS"}
+        ],
+        result:"<strong>$31M de EBITDA incremental</strong> en el primer año. La retención de clientes se recuperó al 91%. AeroLogix ofrece visibilidad de envíos en menos de 2 horas, ganando 3 nuevas cuentas por $140M."
+      }
+    ],
+    reviews:[
+      {
+        text:"AI CentX no solo entregó una estrategia — se arremangaron y condujeron la transformación junto a nosotros. La mejora de EBITDA superó todo lo que proyectamos. Un socio extraordinario.",
+        name:"Marcus Weber", role:"COO, NordPack Industries", initials:"MW"
+      },
+      {
+        text:"El programa Lean Six Sigma transformó la forma en que nuestros equipos abordan los problemas. Mejoraron los resultados de los pacientes, bajaron los costos y el personal está genuinamente comprometido. Impacto notable.",
+        name:"Dra. Fernanda Lopes", role:"CEO, VidaSaúde Hospital Group", initials:"FL"
+      },
+      {
+        text:"El pronóstico de demanda con IA por sí solo pagó toda la consultoría en el primer trimestre. El equipo de AI CentX entendió profundamente el retail y entregó soluciones prácticas, no teoría. Muy recomendable.",
+        name:"James Callahan", role:"Chief Digital Officer, Meridian Commerce Group", initials:"JC"
+      },
+      {
+        text:"Entrevistamos a cinco firmas consultoras. AI CentX fue la única capaz de integrar excelencia operacional, adopción tecnológica y cambio de personas simultáneamente. Los resultados nos dieron la razón.",
+        name:"Sara Al-Rashidi", role:"VP Estrategia, AeroLogix Cargo", initials:"SR"
+      }
+    ],
+    footer_rights:"Todos los derechos reservados.", footer_contact:"Contacto",
+    contact_follow:"S\u00edguenos",
+    social_linkedin:"Seguir en LinkedIn",
+    social_instagram:"Seguir en Instagram",
+    social_substack:"Suscribirse al Boletín",
+    contact_sending:"Enviando tu mensaje\u2026",
+    contact_success:"\u00a1Mensaje enviado! Nos pondremos en contacto pronto.",
+    contact_error:"Algo sali\u00f3 mal. Por favor int\u00e9ntelo de nuevo o esc\u00edbanos directamente.",
+    contact_again:"Enviar otro mensaje",
+    contact_retry:"Intentar de nuevo"
+  },
+
+  pt: {
+    nav_about:"Sobre", nav_services:"Servi\u00e7os", nav_how:"Como Funciona",
+    nav_faq:"FAQ", nav_cta:"Come\u00e7ar",
+    hero_tag:"Gest\u00e3o Empresarial e Transforma\u00e7\u00e3o Digital",
+    hero_l1:"Seu Parceiro de", hero_l2:"Confian\u00e7a",
+    hero_l3:"para o Crescimento", hero_l4:" Empresarial",
+    hero_sub:"A AI CentX ajuda empresas a otimizar opera\u00e7\u00f5es, simplificar processos e aproveitar tecnologia de ponta para impulsionar o crescimento sustent\u00e1vel e a inova\u00e7\u00e3o.",
+    hero_cta1:"Come\u00e7ar a Transformar", hero_cta2:"Nossos Servi\u00e7os", hero_cta3:"Modelo de Transforma\u00e7\u00e3o",
+    stat1:"Anos de Experi\u00eancia", stat2:"Empresas Transformadas", stat3:"\u00c1reas de Especializa\u00e7\u00e3o",
+    about_label:"Sobre a AI CentX",
+    about_h2:"Seu Parceiro de Confian\u00e7a em Gest\u00e3o Empresarial e Transforma\u00e7\u00e3o Digital",
+    about_p1:"Com anos de experi\u00eancia, somos especializados em ajudar empresas a otimizar opera\u00e7\u00f5es, simplificar processos e aproveitar tecnologia de ponta para impulsionar o crescimento e a inova\u00e7\u00e3o.",
+    about_p2:"Seja para melhorar a efici\u00eancia, adotar ferramentas digitais ou transformar o modelo de neg\u00f3cios, oferecemos solu\u00e7\u00f5es personalizadas projetadas para atender \u00e0s suas necessidades e objetivos \u00fanicos.",
+    about_cta:"Vamos trabalhar juntos \u2192",
+    about_card_title:"Modelo de Transforma\u00e7\u00e3o Integrado",
+    about_card_sub:"Pessoas \u00b7 Processo \u00b7 Tecnologia \u00b7 Dados",
+    itm_people:"Pessoas", itm_people_desc:"Mudan\u00e7a \u00b7 Lideran\u00e7a \u00b7 Cultura",
+    itm_process:"Processo", itm_process_desc:"Lean \u00b7 Six Sigma \u00b7 Automa\u00e7\u00e3o",
+    itm_tech:"Tecnologia", itm_tech_desc:"IA \u00b7 Cloud \u00b7 IoT \u00b7 Digital",
+    itm_data:"Dados", itm_data_desc:"An\u00e1lise \u00b7 Insights \u00b7 KPIs",
+    about_float_strong:"Lean Six Sigma",
+    about_float_span:"Excel\u00eancia em Processos",
+    pills:["Gest\u00e3o Estrat\u00e9gica","Transforma\u00e7\u00e3o Digital","Otimiza\u00e7\u00e3o de Processos","Gest\u00e3o de Mudan\u00e7as","Lean Six Sigma","Ado\u00e7\u00e3o de IA e Tecnologia"],
+    serv_label:"O Que Oferecemos", serv_h2:"Nossas \u00c1reas de Especializa\u00e7\u00e3o",
+    services:[
+      {icon:"🎯",name:"Gest\u00e3o Estrat\u00e9gica Empresarial",desc:"Alinhamos a vis\u00e3o, os recursos e as opera\u00e7\u00f5es da sua organiza\u00e7\u00e3o para entregar resultados empresariais mensur\u00e1veis. Do planejamento estrat\u00e9gico \u00e0 gest\u00e3o de desempenho, ajudamos l\u00edderes a tomar decis\u00f5es informadas com confian\u00e7a."},
+      {icon:"🔄",name:"Roteiros de Transforma\u00e7\u00e3o Digital",desc:"Projetamos roteiros de transforma\u00e7\u00e3o claros e acion\u00e1veis que guiam sua organiza\u00e7\u00e3o na ado\u00e7\u00e3o de tecnologias digitais \u2014 escalonados, pr\u00e1ticos e alinhados com suas prioridades de neg\u00f3cio."},
+      {icon:"⚙️",name:"Otimiza\u00e7\u00e3o e Automa\u00e7\u00e3o de Processos",desc:"Identificamos gargalos, eliminamos desperd\u00edcios e redesenhamos fluxos de trabalho usando metodologias comprovadas. Ao integrar automa\u00e7\u00e3o onde mais importa, ajudamos sua equipe a fazer mais com menos."},
+      {icon:"🤝",name:"Gest\u00e3o de Mudan\u00e7as Organizacionais",desc:"A transforma\u00e7\u00e3o bem-sucedida requer pessoas. Desenvolvemos a prontid\u00e3o para mudan\u00e7as, projetamos estrat\u00e9gias de comunica\u00e7\u00e3o e apoiamos a lideran\u00e7a para garantir que as equipes adotem novas formas de trabalhar."},
+      {icon:"📐",name:"Treinamento e Implanta\u00e7\u00e3o de Lean Six Sigma",desc:"Do n\u00edvel Yellow Belt ao Black Belt, oferecemos programas de treinamento em Lean Six Sigma e orienta\u00e7\u00e3o pr\u00e1tica de projetos para incorporar uma cultura de melhoria cont\u00ednua na sua organiza\u00e7\u00e3o."},
+      {icon:"🤖",name:"Desenvolvimento de IA e Ado\u00e7\u00e3o Tecnol\u00f3gica",desc:"Ajudamos a identificar, avaliar e implementar as tecnologias certas \u2014 IA, Cloud, IoT e muito mais \u2014 integradas \u00e0s suas opera\u00e7\u00f5es de forma pr\u00e1tica, segura e projetada para escalar."}
+    ],
+    how_label:"Nossa Abordagem", how_h2:"Do Desafio \u00e0 Transforma\u00e7\u00e3o",
+    steps:[
+      {title:"Diagn\u00f3stico",desc:"Come\u00e7amos compreendendo profundamente o seu contexto de neg\u00f3cios, desafios atuais e objetivos \u2014 realizando uma avalia\u00e7\u00e3o completa dos seus processos, tecnologia e cultura organizacional."},
+      {title:"Projeto",desc:"Co-criamos uma estrat\u00e9gia e roteiro personalizado, definindo marcos claros, KPIs e escolhas tecnol\u00f3gicas alinhadas \u00e0s suas prioridades e or\u00e7amento."},
+      {title:"Implanta\u00e7\u00e3o",desc:"Implementamos solu\u00e7\u00f5es em fases estruturadas \u2014 gerenciando mudan\u00e7as, treinando suas equipes, integrando ferramentas e garantindo que cada etapa gere valor mensur\u00e1vel."},
+      {title:"Sustenta\u00e7\u00e3o",desc:"Incorporamos pr\u00e1ticas de melhoria cont\u00ednua na sua organiza\u00e7\u00e3o, garantindo ado\u00e7\u00e3o de longo prazo, otimiza\u00e7\u00e3o cont\u00ednua e ROI mensur\u00e1vel muito al\u00e9m do projeto inicial."}
+    ],
+    contact_label:"Fale Conosco", contact_h2:"Vamos Transformar o Seu Neg\u00f3cio",
+    contact_p:"Conte-nos sobre o seu desafio. Nossa equipe responder\u00e1 em at\u00e9 24 horas.",
+    contact_btn:"Enviar Mensagem",
+    contact_success:"\u2713 Mensagem enviada! Entraremos em contato em breve.",
+    name_ph:"Seu nome", email_ph:"Seu e-mail",
+    company_ph:"Sua empresa (opcional)",
+    msg_ph:"Descreva seu desafio ou o que gostaria de alcan\u00e7ar\u2026",
+    faq_label:"Perguntas Frequentes", faq_h2:"Perguntas Comuns",
+    faqs:[
+      {q:"Com que tipo de empresas a AI CentX trabalha?",a:"Trabalhamos com empresas de todos os tamanhos \u2014 desde PMEs em crescimento que buscam profissionalizar suas opera\u00e7\u00f5es, at\u00e9 grandes corpora\u00e7\u00f5es em processos de transforma\u00e7\u00e3o digital complexa. Nossas solu\u00e7\u00f5es s\u00e3o sempre adaptadas ao seu setor, escala e objetivos espec\u00edficos."},
+      {q:"O que \u00e9 Lean Six Sigma e como pode beneficiar minha organiza\u00e7\u00e3o?",a:"Lean Six Sigma \u00e9 uma metodologia comprovada que combina Lean (elimina\u00e7\u00e3o de desperd\u00edcios) e Six Sigma (redu\u00e7\u00e3o de defeitos) para melhorar a velocidade, qualidade e efici\u00eancia dos processos. Oferecemos programas de treinamento do n\u00edvel introdut\u00f3rio ao avan\u00e7ado."},
+      {q:"Como voc\u00eas abordam a ado\u00e7\u00e3o de IA e tecnologia?",a:"Adotamos uma abordagem centrada no neg\u00f3cio \u2014 avaliando sua maturidade, identificando os casos de uso de maior impacto e orientando na sele\u00e7\u00e3o, implementa\u00e7\u00e3o e gest\u00e3o de mudan\u00e7as. Trabalhamos com IA, Cloud, IoT e outras tecnologias emergentes de forma pr\u00e1tica e segura."},
+      {q:"Quanto tempo dura um projeto t\u00edpico?",a:"Projetos de otimiza\u00e7\u00e3o focados geralmente levam de 4 a 8 semanas. Programas completos de transforma\u00e7\u00e3o digital geralmente abrangem de 3 a 12 meses. Projetamos cada projeto para entregar valor em cada fase."},
+      {q:"Como come\u00e7o com a AI CentX?",a:"Basta entrar em contato atrav\u00e9s do nosso formul\u00e1rio. Agendaremos uma sess\u00e3o de descoberta sem compromisso para entender suas necessidades e determinar como podemos melhor apoiar sua jornada de transforma\u00e7\u00e3o empresarial."}
+    ],
+    nav_linkedin:"LinkedIn",
+    li_label:"Último no LinkedIn", li_h2:"Fique Por Dentro",
+    li_sub:"Siga a AI CentX para novidades sobre IA, transformação digital e inovação empresarial.",
+    li_follow_btn:"Seguir AI CentX no LinkedIn",
+    li_read_more:"Ler no LinkedIn →",
+    nav_cases:"Casos", nav_reviews:"Avalia\u00e7\u00f5es",
+    cs_label:"Casos de Sucesso", cs_h2:"Transformando Empresas. Gerando Resultados.",
+    cs_sub:"Quatro organiza\u00e7\u00f5es. Quatro transforma\u00e7\u00f5es. Impacto mensur\u00e1vel em EBITDA, custos e receita.",
+    rev_label:"Avalia\u00e7\u00f5es de Clientes", rev_h2:"O Que Nossos Clientes Dizem",
+    caseStudies:[
+      {
+        icon:"\ud83c\udfed", industry:"Manufatura", company:"NordPack Industries",
+        region:"Alemanha \u00b7 1.800 funcion\u00e1rios",
+        challenge:"A NordPack enfrentava uma taxa de defeitos de 22% em suas linhas de embalagem, excesso de estoque no valor de \u20ac4,2M e custos crescentes que comprimiam o EBITDA quase a zero. A lideran\u00e7a n\u00e3o tinha um framework sistem\u00e1tico para abordar as causas raiz.",
+        metrics:[
+          {value:"+31%", key:"Melhoria EBITDA", color:"pos"},
+          {value:"-38%", key:"Custos Operacionais", color:"neg"},
+          {value:"-89%", key:"Taxa de Defeitos", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagn\u00f3stico", detail:"Mapeamento do fluxo de valor revelou 14 pontos de desperd\u00edcio em 3 linhas"},
+          {name:"Projeto",       detail:"Roteiro Lean Six Sigma com 6 projetos DMAIC e painel de KPIs"},
+          {name:"Implanta\u00e7\u00e3o", detail:"Eventos kaizen interfuncionais, controles de qualidade automatizados, modelo JIT"},
+          {name:"Sustenta\u00e7\u00e3o", detail:"Programa interno Green Belt; revis\u00f5es mensais de governan\u00e7a; ROI garantido em 18 meses"}
+        ],
+        result:"<strong>\u20ac6,1M em economias anualizadas</strong> em 14 meses. O EBITDA subiu de 2,1% para 14,7%. A NordPack eliminou o passivo de defeitos e lan\u00e7ou um centro de excel\u00eancia de melhoria cont\u00ednua."
+      },
+      {
+        icon:"\ud83c\udfe5", industry:"Sa\u00fade", company:"VidaSa\u00fade Hospital Group",
+        region:"Brasil \u00b7 3 hospitais \u00b7 4.200 funcion\u00e1rios",
+        challenge:"Os atrasos na alta de pacientes eram de 6,8 horas em m\u00e9dia, a utiliza\u00e7\u00e3o do centro cir\u00fargico era de apenas 61% e o retrabalho administrativo consumia 34% do tempo da equipe.",
+        metrics:[
+          {value:"+27%", key:"Margem EBITDA", color:"pos"},
+          {value:"-41%", key:"Tempo de Alta", color:"neg"},
+          {value:"+19%", key:"Uso do Centro Cir\u00fargico", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagn\u00f3stico", detail:"Minera\u00e7\u00e3o de processos em 3 unidades identificou 11 gargalos no fluxo de pacientes"},
+          {name:"Projeto",       detail:"Roteiro de transforma\u00e7\u00e3o digital: integra\u00e7\u00e3o PEP, triagem IA, IA de escalas"},
+          {name:"Implanta\u00e7\u00e3o", detail:"Rollout gradual em 3 hospitais; programa de gest\u00e3o de mudan\u00e7as para 4.200 pessoas"},
+          {name:"Sustenta\u00e7\u00e3o", detail:"Painel operacional em tempo real; conselho de revis\u00e3o Six Sigma trimestral"}
+        ],
+        result:"<strong>BRL 38M em economia anual</strong> e 27 pontos de melhoria no EBITDA. A satisfa\u00e7\u00e3o dos pacientes subiu de 6,2 para 9,1 / 10. A VidaSa\u00fade reduziu gastos com pessoal terceirizado em 44%."
+      },
+      {
+        icon:"\ud83d\udecd\ufe0f", industry:"Varejo e E-Commerce", company:"Meridian Commerce Group",
+        region:"Estados Unidos \u00b7 280 lojas",
+        challenge:"O crescimento omnicanal da Meridian estagnado em 3% ao ano devido a erros de fulfillment, reconcilia\u00e7\u00e3o manual de estoque e plataforma de tecnologia fragmentada. A convers\u00e3o online era de apenas 1,8%.",
+        metrics:[
+          {value:"+48%", key:"Vendas Online", color:"pos"},
+          {value:"-29%", key:"Custo de Fulfillment", color:"neg"},
+          {value:"+2,1\u00d7", key:"Taxa de Convers\u00e3o", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagn\u00f3stico", detail:"Auditoria da jornada do cliente e mapeamento da cadeia de suprimentos em 280 lojas"},
+          {name:"Projeto",       detail:"Previs\u00e3o de demanda com IA, plataforma de com\u00e9rcio unificado e estrat\u00e9gia last-mile"},
+          {name:"Implanta\u00e7\u00e3o", detail:"Migra\u00e7\u00e3o de plataforma em 12 semanas; requalifica\u00e7\u00e3o do pessoal em 280 localidades"},
+          {name:"Sustenta\u00e7\u00e3o", detail:"Motor de reposi\u00e7\u00e3o preditiva; cultura de A/B testing incorporada na equipe digital"}
+        ],
+        result:"A receita online cresceu <strong>de $42M para $62M</strong> em 11 meses. Os erros de fulfillment ca\u00edram 76%. O modelo de demanda IA reduziu as perdas por excesso de estoque em $8,4M ao ano."
+      },
+      {
+        icon:"\u2708\ufe0f", industry:"Log\u00edstica e Avia\u00e7\u00e3o", company:"AeroLogix Cargo",
+        region:"EAU \u00b7 14 pa\u00edses \u00b7 6.500 funcion\u00e1rios",
+        challenge:"A AeroLogix enfrentava 31% de capacidade ociosa em rotas principais, atraso m\u00e9dio de 19 horas no rastreamento de remessas e margens erodidas por sobrecargas de combust\u00edvel. A reten\u00e7\u00e3o de clientes havia ca\u00eddo para 68%.",
+        metrics:[
+          {value:"+22%", key:"Crescimento EBITDA", color:"pos"},
+          {value:"-34%", key:"Capacidade Ociosa", color:"neg"},
+          {value:"+18%", key:"Receita / Rota", color:"pos"}
+        ],
+        steps:[
+          {name:"Diagn\u00f3stico", detail:"An\u00e1lise de telemetria IoT em 14 aeroportos hub identificou 9 causas de atraso"},
+          {name:"Projeto",       detail:"Modelo de otimiza\u00e7\u00e3o de rotas com IA + plataforma de rastreamento IoT em tempo real"},
+          {name:"Implanta\u00e7\u00e3o", detail:"Deploy de sensores IoT em 6.500 unidades; modelo IA treinado com 3 anos de dados"},
+          {name:"Sustenta\u00e7\u00e3o", detail:"Painel control tower 24/7; modelo ML retreinado trimestralmente; monitoramento NPS"}
+        ],
+        result:"<strong>$31M de EBITDA incremental</strong> no primeiro ano. A reten\u00e7\u00e3o de clientes se recuperou para 91%. A AeroLogix oferece visibilidade de remessa em menos de 2 horas, conquistando 3 novas contas no valor de $140M."
+      }
+    ],
+    reviews:[
+      {
+        text:"A AI CentX n\u00e3o apenas entregou uma estrat\u00e9gia — arregaçaram as mangas e conduziram a transforma\u00e7\u00e3o ao nosso lado. A melhora no EBITDA foi al\u00e9m de qualquer coisa que projetamos. Parceiro extraordin\u00e1rio.",
+        name:"Marcus Weber", role:"COO, NordPack Industries", initials:"MW"
+      },
+      {
+        text:"O programa Lean Six Sigma transformou como nossas equipes pensam sobre problemas. Os resultados dos pacientes melhoraram, os custos ca\u00edram e nossa equipe est\u00e1 genuinamente engajada na melhoria cont\u00ednua.",
+        name:"Dra. Fernanda Lopes", role:"CEO, VidaSa\u00fade Hospital Group", initials:"FL"
+      },
+      {
+        text:"A previs\u00e3o de demanda com IA por si s\u00f3 pagou todo o projeto no primeiro trimestre. A equipe da AI CentX entendeu o varejo profundamente e entregou solu\u00e7\u00f5es pr\u00e1ticas. Recomendo muito.",
+        name:"James Callahan", role:"Chief Digital Officer, Meridian Commerce Group", initials:"JC"
+      },
+      {
+        text:"Entrevistamos cinco consultorias. A AI CentX foi a \u00fanica capaz de integrar excel\u00eancia operacional, ado\u00e7\u00e3o de tecnologia e mudan\u00e7a de pessoas simultaneamente. Os resultados nos deram raz\u00e3o.",
+        name:"Sara Al-Rashidi", role:"VP Estrat\u00e9gia, AeroLogix Cargo", initials:"SR"
+      }
+    ],
+    footer_rights:"Todos os direitos reservados.", footer_contact:"Contato",
+    contact_follow:"Siga-nos",
+    social_linkedin:"Seguir no LinkedIn",
+    social_instagram:"Seguir no Instagram",
+    social_substack:"Assinar o Boletim",
+    contact_sending:"Enviando sua mensagem\u2026",
+    contact_success:"Mensagem enviada! Entraremos em contato em breve.",
+    contact_error:"Algo deu errado. Por favor tente novamente ou entre em contato diretamente.",
+    contact_again:"Enviar outra mensagem",
+    contact_retry:"Tentar novamente"
+  }
+};
+
+/* ─── RENDER ENGINE ─── */
+let lang = 'en';
+
+function setLang(l) {
+  lang = l;
+  const t = T[l];
+  document.documentElement.lang = l;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (t[k] !== undefined) el.textContent = t[k];
+  });
+
+  document.getElementById('nameInput').placeholder    = t.name_ph;
+  document.getElementById('emailInput').placeholder   = t.email_ph;
+  document.getElementById('companyInput').placeholder = t.company_ph;
+  document.getElementById('msgInput').placeholder     = t.msg_ph;
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent.trim() === l.toUpperCase())
+  );
+
+  renderPills(t);
+  renderServices(t);
+  renderSteps(t);
+  renderFaq(t);
+  renderCaseStudies(t);
+  renderReviews(t);
+
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+  }, 50);
+}
+
+function renderPills(t) {
+  document.getElementById('pillsContainer').innerHTML =
+    t.pills.map(p => `<span class="pill"><span class="pill-dot"></span>${p}</span>`).join('');
+}
+function renderServices(t) {
+  document.getElementById('servicesGrid').innerHTML =
+    t.services.map(s => `
+      <div class="service-card reveal">
+        <div class="service-icon">${s.icon}</div>
+        <div class="service-name">${s.name}</div>
+        <div class="service-desc">${s.desc}</div>
+      </div>`).join('');
+}
+function renderSteps(t) {
+  document.getElementById('stepsContainer').innerHTML =
+    t.steps.map((s,i) => `
+      <div class="step reveal">
+        <div class="step-num">0${i+1}</div>
+        <div class="step-title">${s.title}</div>
+        <div class="step-desc">${s.desc}</div>
+      </div>`).join('');
+}
+function renderFaq(t) {
+  document.getElementById('faqList').innerHTML =
+    t.faqs.map(f => `
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ${f.q}<span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">${f.a}</div>
+      </div>`).join('');
+}
+
+function renderCaseStudies(t) {
+  document.getElementById('caseStudiesGrid').innerHTML =
+    t.caseStudies.map(cs => `
+      <div class="cs-card reveal">
+        <div class="cs-header">
+          <div>
+            <div class="cs-industry">${cs.icon} ${cs.industry}</div>
+            <div class="cs-company" style="margin-top:0.5rem;">${cs.company}</div>
+            <div class="cs-region">${cs.region}</div>
+          </div>
+        </div>
+        <div class="cs-metrics">
+          ${cs.metrics.map(m => `
+            <div class="cs-metric">
+              <div class="cs-metric-val"><span class="${m.color}">${m.value}</span></div>
+              <div class="cs-metric-key">${m.key}</div>
+            </div>`).join('')}
+        </div>
+        <div class="cs-body">
+          <div class="cs-challenge">${cs.challenge}</div>
+          <div class="cs-steps-mini">
+            ${cs.steps.map((s,i) => `
+              <div class="cs-step-mini">
+                <div class="cs-step-num">0${i+1}</div>
+                <div class="cs-step-name">${s.name}</div>
+                <div class="cs-step-detail">${s.detail}</div>
+              </div>`).join('')}
+          </div>
+          <div class="cs-result">${cs.result}</div>
+        </div>
+      </div>`).join('');
+}
+
+function renderReviews(t) {
+  document.getElementById('reviewsGrid').innerHTML =
+    t.reviews.map(r => `
+      <div class="rev-card reveal">
+        <div class="rev-stars">⭐⭐⭐⭐⭐</div>
+        <p class="rev-text">"${r.text}"</p>
+        <div class="rev-author">
+          <div class="rev-avatar">${r.initials}</div>
+          <div>
+            <div class="rev-name">${r.name}</div>
+            <div class="rev-role">${r.role}</div>
+          </div>
+        </div>
+      </div>`).join('');
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!open) item.classList.add('open');
+}
+/* ─────────────────────────────────────────
+   GOOGLE SHEETS INTEGRATION
+   Live endpoint — submissions go directly to Google Sheets
+───────────────────────────────────────── */
+/* ─── GOOGLE SHEETS via hidden iframe ────────────────────────────
+   Native HTML form POST → target="sheet_iframe"
+   No fetch, no CORS, no redirect stripping. Proven to work.
+─────────────────────────────────────────────────────────────── */
+var formSubmitted = false;
+
+function handleSubmit(event) {
+  // Sync the current language into the hidden field before submit
+  document.getElementById('langInput').value = lang;
+  // Show loading; let native form POST proceed (no preventDefault)
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formLoading').style.display = 'block';
+  document.getElementById('successMsg').style.display  = 'none';
+  document.getElementById('errorMsg').style.display    = 'none';
+  formSubmitted = true;
+}
+
+function iframeLoaded() {
+  // Fires on page-load (empty) and again after form submit
+  if (!formSubmitted) return;
+  formSubmitted = false;
+  document.getElementById('formLoading').style.display = 'none';
+  document.getElementById('successMsg').style.display  = 'block';
+  document.getElementById('contactForm').reset();
+}
+
+function resetContactForm() {
+  document.getElementById('successMsg').style.display  = 'none';
+  document.getElementById('errorMsg').style.display    = 'none';
+  document.getElementById('contactForm').style.display = 'block';
+}
+
+/* ─── SCROLL REVEAL ─── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ─── INIT ─── */
+setLang('en');
+</script>
+</body>
+</html>
